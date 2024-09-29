@@ -908,7 +908,7 @@ body.ie ._ibg img {
   right: 10px;
   cursor: pointer;
   z-index: 30;
-  background: url("/img/icons/close-black.svg") 0 0 no-repeat;
+  background: red;
 }
 
 .popup__img {
