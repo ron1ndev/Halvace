@@ -904,11 +904,40 @@ body.ie ._ibg img {
   width: 22px;
   height: 22px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
   z-index: 30;
-  background: red;
+  /* background: red; */
+}
+.popup__close span::after{
+  content:"";
+  display: inline-block;
+  width: 25px;
+  height: 3px;
+  background-color:black;
+  position: relative;
+  top: -15px;
+  right: 0;
+  transform: rotate(45deg);
+
+
+ 
+}
+
+.popup__close span::before{
+  content:"";
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  right: 0;
+  width: 25px;
+  height: 3px;
+  background-color:black;
+  transform: rotate(-45deg);
+ 
+
+
 }
 
 .popup__img {
