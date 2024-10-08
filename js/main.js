@@ -1,3 +1,21 @@
+const btnPopupBy = document.querySelectorAll('.popup__btn');
+let clickHas = false
+btnPopupBy.forEach(item=>{
+	item.addEventListener('click',(e)=>{
+		let target = e.target;
+		clickHas = true;
+		target.innerHTML = 'Товар добавлен'
+		target.classList.add('color-red');
+		setTimeout(() => {
+			target.innerHTML = 'Добавить в корзину'
+			target.classList.remove('color-red');
+		}, 700);
+		
+	})
+})
+
+
+
 var ua = window.navigator.userAgent;
 var msie = ua.indexOf("MSIE ");
 var isMobile = { Android: function () { return navigator.userAgent.match(/Android/i); }, BlackBerry: function () { return navigator.userAgent.match(/BlackBerry/i); }, iOS: function () { return navigator.userAgent.match(/iPhone|iPad|iPod/i); }, Opera: function () { return navigator.userAgent.match(/Opera Mini/i); }, Windows: function () { return navigator.userAgent.match(/IEMobile/i); }, any: function () { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); } };
@@ -339,7 +357,8 @@ for (let index = 0; index < popups.length; index++) {
 	popup.addEventListener("click", function (e) {
 		if (!e.target.closest('.popup__body')) {
 			popup_close(e.target.closest('.popup'));
-		}
+			
+		};
 	});
 }
 function popup_open(item, video = '') {
@@ -1279,6 +1298,8 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // Боковая корзина 
+	let wrap = document.querySelector('.wrapper');
+
     let cart = document.querySelector(".header__menu-cart")
     let cartContent = document.querySelector(".cart__content")
     let cartArr = document.querySelector(".cart__arr")
@@ -1305,7 +1326,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let cartFinalOrderBtn = document.querySelector(".cart__finalOrder-btn ");
     cartFinalOrderBtn.addEventListener('click', function () {
         cartFinalOrderBtn.classList.add("_popup-link")
-    })
+    });
 
     // Функция открытие корзины
     cart.addEventListener("click", function (e) {
@@ -1313,6 +1334,7 @@ document.addEventListener('DOMContentLoaded', function () {
         cartContent.classList.add("active")
         cartBar.classList.add("active")
         document.querySelector("body").classList.add("_lock")
+		document.querySelector("body").classList.add("rmMrgScroll")
     })
 
     // Функция закрытия корзины на иконку
@@ -1320,6 +1342,8 @@ document.addEventListener('DOMContentLoaded', function () {
         cartContent.classList.remove("active")
         cartBar.classList.remove("active")
         document.querySelector("body").classList.remove("_lock")
+		document.querySelector("body").classList.remove("rmMrgScroll")
+
     })
 
     // Функция закрытия корзины при клике свободную область
@@ -1328,6 +1352,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cartContent.classList.remove("active")
             cartBar.classList.remove("active")
             document.querySelector("body").classList.remove("_lock")
+			document.querySelector("body").classList.remove("rmMrgScroll")
         }
 
     })
