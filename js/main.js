@@ -397,8 +397,9 @@ function popup_close(item, bodyUnlock = true) {
 			}
 			item.classList.remove('_active');
 		}
-		if (!document.querySelector('.menu__body._active') && bodyUnlock) {
+		if (!document.querySelector('.menu__body._active') && bodyUnlock && !document.querySelector('.cart__content').classList.contains('active')) {
 			body_lock_remove(500);
+
 		}
 		history.pushState('', '', window.location.href.split('#')[0]);
 	}
@@ -1334,7 +1335,7 @@ document.addEventListener('DOMContentLoaded', function () {
         cartContent.classList.add("active")
         cartBar.classList.add("active")
         document.querySelector("body").classList.add("_lock")
-		document.querySelector("body").classList.add("rmMrgScroll")
+		// document.querySelector("body").classList.add("rmMrgScroll")
     })
 
     // Функция закрытия корзины на иконку
@@ -1342,17 +1343,17 @@ document.addEventListener('DOMContentLoaded', function () {
         cartContent.classList.remove("active")
         cartBar.classList.remove("active")
         document.querySelector("body").classList.remove("_lock")
-		document.querySelector("body").classList.remove("rmMrgScroll")
+		// document.querySelector("body").classList.remove("rmMrgScroll")
 
     })
 
     // Функция закрытия корзины при клике свободную область
     cartBar.addEventListener('click', function (e) {
-        if (e.target.classList.contains("cart-bar")) {
+        if (e.target.classList.contains("cart-bar")){
             cartContent.classList.remove("active")
             cartBar.classList.remove("active")
             document.querySelector("body").classList.remove("_lock")
-			document.querySelector("body").classList.remove("rmMrgScroll")
+			// document.querySelector("body").classList.remove("rmMrgScroll")
         }
 
     })
@@ -1395,6 +1396,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     }
+	cartBtn.addEventListener('click',()=>{
+		document.querySelector('.cart__content').classList.add('_lock');
+		console.log(1)
+	})
+	if(document.querySelector('.cart__content').classList.contains('active')){
+		document.querySelector('.cart__content').classList.add('_lock');
+	}
 
     const generateCartProduct = (img, title, price, id) => {
         return `
