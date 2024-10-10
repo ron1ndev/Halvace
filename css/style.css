@@ -3032,7 +3032,13 @@ border-radius:8px;
   .about__item {
     padding: 0 0 60% 0;
   }
-
+  .contacts_page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    
+  }
   .contacts__content {
     display: block;
     text-align: center;
