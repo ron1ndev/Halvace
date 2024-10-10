@@ -374,6 +374,7 @@ function popup_open(item, video = '') {
 		}
 		if (!document.querySelector('.menu__body._active')) {
 			body_lock_add(500);
+			
 		}
 		curent_popup.classList.add('_active');
 		history.pushState('', '', '#' + item);
@@ -398,7 +399,9 @@ function popup_close(item, bodyUnlock = true) {
 			item.classList.remove('_active');
 		}
 		if (!document.querySelector('.menu__body._active') && bodyUnlock && !document.querySelector('.cart__content').classList.contains('active')) {
+
 			body_lock_remove(500);
+
 
 		}
 		history.pushState('', '', window.location.href.split('#')[0]);
