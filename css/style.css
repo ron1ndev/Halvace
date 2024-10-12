@@ -170,6 +170,24 @@ body._lock {
   right: 5px;
 }
 
+.loading_content{
+  width: 27px;
+  height: 27px;
+}
+.loading{
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+.loading-visible{
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+}
+
 
 .page {
   -webkit-box-flex: 1;
@@ -1070,6 +1088,20 @@ body.ie ._ibg img {
   border-radius:4px;
   text-align: center;
   min-width: 282px;
+  transition: all 0.3s;
+}
+.popup__btn.hover:hover{
+  background: #ffffff;
+  color: #000000;
+}
+.popup__btn.ShopСart{
+  background: #ffffff;
+  color: #000000;
+}
+.popup__btn.ShopСart:hover{
+  background: #000000;
+  color: #ffffff;
+  transition: all 0.3s;
 }
 .popup__btn.color-red{
   background: #ffffff;
@@ -1317,7 +1349,7 @@ body.ie ._ibg img {
   margin-right: 15px;
 }
 
-.header-fixed {
+.header-fixed-active {
   position: fixed;
   top: 0;
   border-bottom: 1px solid black;
@@ -1328,6 +1360,8 @@ body.ie ._ibg img {
           animation: hf 1s;
   padding: 20px 0;
 }
+
+
 
 .main-block-padding {
   padding: 130px 0 0 0;
@@ -2482,6 +2516,9 @@ border-radius:8px;
   .popup__body-send{
     max-height: 540px;
   }
+  .new-product__row{
+    column-gap: 80px;
+  }
 }
 
 @media (max-width: 992px) {
@@ -2869,12 +2906,11 @@ border-radius:8px;
   }
 
   .new-product__row {
-    /* -ms-flex-wrap: wrap;
+    
         flex-wrap: wrap;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between; */
-            display: block;
+            justify-content: center;
+           column-gap: 40px;
+           row-gap: 20px;
   }
 
   .advantages__contents {
@@ -3168,11 +3204,12 @@ border-radius:8px;
   .new-product__content {
     padding: 30px 0 0 0;
   }
-
+  .new-product__row{
+row-gap: 10px;
+  }
   .new-product__column {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 1 100%;
-            flex: 0 1 100%;
+
+            flex: 0 1 250px;
     margin-bottom: 20px;
   }
 
@@ -3210,6 +3247,9 @@ border-radius:8px;
     max-height: 640px;
   }
   .order__btn{
+  }
+  .new-product__row{
+    
   }
 }
 
