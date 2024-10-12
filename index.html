@@ -5,6 +5,7 @@
 	<title>internet-page</title>
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
@@ -62,7 +63,7 @@
 							<div class="main-block__title">Измени свой интерьер<br> к лучшему</div>
 							<div class="main-block__text">Наш слоган - удобность,<br> надежность и качество </div>
 							<a class="main-block__btn" href="shop.html">В магазин</a>
-							<a href="#interior" class="main-block__scroll" rel="m_PageScroll2id"></a>
+							<a href="#interior" class="main-block__scroll"></a>
 
 						</div>
 						<div class="main-block__shadow"></div>
@@ -127,7 +128,7 @@
 								<div class="new-product__items">
 									<a class="_popup-link" href="#new-prodect1">
 										<div class="new-product__img">
-											<picture><source srcset="img/new/1.webp" type="image/webp"><img src="img/new/1.png" alt="Vase"></picture>
+											<picture><source srcset="img/new/1_1.jpg" type="image/webp"><img src="img/new/1_1.jpg" alt="Vase"></picture>
 										</div>
 									</a>
 									<div class="new-product__text">Nordic вазы </div>
@@ -138,7 +139,7 @@
 								<div class="new-product__items">
 									<a class="new-product__link _popup-link" href="#new-prodect2">
 										<div class="new-product__img">
-											<picture><source srcset="img/new/2.webp" type="image/webp"><img src="img/new/2.png" alt="Shelf"></picture>
+											<picture><source srcset="img/new/2_1.jpg" type="image/webp"><img src="img/new/2_1.jpg" alt="Shelf"></picture>
 										</div>
 									</a>
 									<div class="new-product__text">Decor полки</div>
@@ -150,7 +151,7 @@
 									<div class=" new-product__items">
 										<a class="new-product__link _popup-link" href="#new-prodect3">
 										<div class="new-product__img">
-											<picture><source srcset="img/new/3.webp" type="image/webp"><img src="img/new/3.png" alt="watch"></picture>
+											<picture><source srcset="img/new/3_1.jpg" type="image/webp"><img src="img/new/3_1.jpg" alt="watch"></picture>
 										</div>
 									</a>
 										<div class="new-product__text">Minimalism часы</div>
@@ -165,58 +166,64 @@
 				<div class="_container">
 					<div class="advantages__contents">
 						<h1 class="title">Преимущества</h1>
-						<div class="advantages__slider">
-							<div class="slider__items">
-								<div class="items__content items__content-color1">
-									<div class="advantages__img">
-										<picture><source srcset="img/advantages/1.svg" type="image/webp"><img src="img/advantages/1.svg" alt=""></picture>
-									</div>
-									<div class="advantages__text">
-										<div class="advantages__text-title">Гарантия</div>
-										<div class="advantages__text-subtitle">
-											Полная гарантия товара с возможностью 
-											замены товара</div>
-									</div>
-								</div>
-							</div>
-							<div class="slider__items">
-								<div class="items__content items__content-color2">
-									<div class="advantages__img">
-										<picture><source srcset="img/advantages/2.svg" type="image/webp"><img src="img/advantages/2.svg" alt=""></picture>
-									</div>
-									<div class="advantages__text">
-										<div class="advantages__text-title">Доступность</div>
-										<div class="advantages__text-subtitle">Покупка товара из любого региона </div>
+						<div class="swiper">
+							<div class="advantages__slider swiper-wrapper">
+								<div class="slider__items swiper-slide">
+									<div class="items__content items__content-color1">
+										<div class="advantages__img">
+											<picture><source srcset="img/advantages/1.svg" type="image/webp"><img src="img/advantages/1.svg" alt=""></picture>
+										</div>
+										<div class="advantages__text">
+											<div class="advantages__text-title">Гарантия</div>
+											<div class="advantages__text-subtitle">
+												Полная гарантия товара с возможностью 
+												замены товара</div>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="slider__items">
-								<div class="items__content items__content-color3">
-									<div class="advantages__img">
-										<picture><source srcset="img/advantages/3.svg" type="image/webp"><img src="img/advantages/3.svg" alt=""></picture>
+								<div class="slider__items swiper-slide">
+									<div class="items__content items__content-color2">
+										<div class="advantages__img">
+											<picture><source srcset="img/advantages/2.svg" type="image/webp"><img src="img/advantages/2.svg" alt=""></picture>
+										</div>
+										<div class="advantages__text">
+											<div class="advantages__text-title">Доступность</div>
+											<div class="advantages__text-subtitle">Покупка товара из любого региона </div>
+										</div>
 									</div>
-									<div class="advantages__text">
-										<div class="advantages__text-title">Качество</div>
-										<div class="advantages__text-subtitle">Каждый товар проходит проверку по ГОСТу
+								</div>
+								<div class="slider__items swiper-slide">
+									<div class="items__content items__content-color3">
+										<div class="advantages__img">
+											<picture><source srcset="img/advantages/3.svg" type="image/webp"><img src="img/advantages/3.svg" alt=""></picture>
+										</div>
+										<div class="advantages__text">
+											<div class="advantages__text-title">Качество</div>
+											<div class="advantages__text-subtitle">Каждый товар проходит проверку по ГОСТу
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="slider__items swiper-slide">
+									<div class="items__content items__content-color4">
+										<div class="advantages__img">
+											<picture><source srcset="img/advantages/4.svg" type="image/webp"><img src="img/advantages/4.svg" alt=""></picture>
+										</div>
+										<div class="advantages__text">
+											<div class="advantages__text-title">Доставка</div>
+											<div class="advantages__text-subtitle">Своевременная доставка без задержки</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="slider__items">
-								<div class="items__content items__content-color4">
-									<div class="advantages__img">
-										<picture><source srcset="img/advantages/4.svg" type="image/webp"><img src="img/advantages/4.svg" alt=""></picture>
-									</div>
-									<div class="advantages__text">
-										<div class="advantages__text-title">Доставка</div>
-										<div class="advantages__text-subtitle">Своевременная доставка без задержки</div>
-									</div>
-								</div>
-							</div>
-						</div>
+							<div class="custom-prev"></div>
+							<div class="custom-next"></div>
+					</div>
 					</div>
 				</div>
 			</section>
+
+
 			<div class="cart-bar">
 				<div class="cart__content">
 					<div class="cart__title">Корзина
@@ -297,7 +304,7 @@
 <div class="popup popup_new-prodect1">
 <div class="popup__content">
 	<div class="popup__body">
-		<div class="popup__img _ibg"><picture><source srcset="img/popup/1.webp" type="image/webp"><img class="popup__img-img" src="img/popup/1.png" alt=""></picture></div>
+		<div class="popup__img _ibg"><picture><source srcset="img/popup/1_1.jpg" type="image/webp"><img class="popup__img-img" src="img/popup/1_1.jpg" alt=""></picture></div>
 		<div class="popup__info">
 			<div class="popup__title">Ваза</div>
 			<div class="popup__price">1 780₽</div>
@@ -317,7 +324,7 @@
 <div class="popup popup_new-prodect2">
 	<div class="popup__content">
 		<div class="popup__body">
-			<div class="popup__img _ibg"><picture><source srcset="img/popup/2.webp" type="image/webp"><img class="popup__img-img" src="img/popup/2.png" alt=""></picture></div>
+			<div class="popup__img _ibg"><picture><source srcset="img/popup/2_1.jpg" type="image/webp"><img class="popup__img-img" src="img/popup/2_1.jpg" alt=""></picture></div>
 			<div class="popup__info">
 				<div class="popup__title">Полка</div>
 				<div class="popup__price">4 250₽</div>
@@ -334,7 +341,7 @@
 <div class="popup popup_new-prodect3">
 	<div class="popup__content">
 		<div class="popup__body">
-			<div class="popup__img _ibg"><picture><source srcset="img/popup/3.webp" type="image/webp"><img class="popup__img-img" src="img/popup/3.png" alt=""></picture></div>
+			<div class="popup__img _ibg"><picture><source srcset="img/popup/3_1.jpg" type="image/webp"><img class="popup__img-img" src="img/popup/3_1.jpg" alt=""></picture></div>
 			<div class="popup__info">
 				<div class="popup__title">Часы</div>
 				<div class="popup__price">3 720₽</div>
@@ -451,9 +458,8 @@
 		</div>
 	</div>
 </div>
-	<script src=" https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<!-- Swiper -->
-<!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 
