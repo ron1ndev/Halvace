@@ -2270,7 +2270,7 @@ border-radius:4px;
 }
 
 .cart__all-price {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-size: 22px;
   font-weight: 500;
 }
@@ -2410,6 +2410,15 @@ border-radius:4px;
   background-image: url("../img/icons/close-black.svg");
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.cart__clear{
+  margin-bottom: 20px;
+}
+.cart__clear-btn{
+  font-size: 16px;
+  background: none;
+
 }
 
 @media (min-width: 991.98px) {
