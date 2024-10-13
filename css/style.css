@@ -2337,11 +2337,17 @@ border-radius:4px;
   display: inline-block;
   width: 100%;
   border-radius:4px;
+  transition: all .3s;
+  border:1px solid black;
 }
 
 .final__order-active:hover {
   cursor: pointer;
   font-size: 18px;
+  /* background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  border:1px solid black;
+  transition: all .3s; */
 }
 
 .final__order-active:active {

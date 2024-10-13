@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 var ua = window.navigator.userAgent;
 var msie = ua.indexOf("MSIE ");
 var isMobile = { Android: function () { return navigator.userAgent.match(/Android/i); }, BlackBerry: function () { return navigator.userAgent.match(/BlackBerry/i); }, iOS: function () { return navigator.userAgent.match(/iPhone|iPad|iPod/i); }, Opera: function () { return navigator.userAgent.match(/Opera Mini/i); }, Windows: function () { return navigator.userAgent.match(/IEMobile/i); }, any: function () { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); } };
@@ -264,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
-
+	
 
 	// Функционал интернет магазина
 
@@ -297,69 +289,83 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Кнопка очистки товаров из корзины
 	const clearCartBtn = document.querySelector('.cart__clear-btn');
 
-	// Усановка каждой кнопке с товаром дата атрибута data-isBuy со значением false
-	// btns.forEach((item=>{
-	// 	item.setAttribute('data-isBuy','false');
-	// }))
-
+	// Попап с переходом на оформление заказа
     let cartFinalOrderBtn = document.querySelector(".cart__finalOrder-btn ");
     cartFinalOrderBtn.addEventListener('click', function () {
         cartFinalOrderBtn.classList.add("_popup-link")
     });
 
+
+    // Функционал открытия и закрытия корзины
+    //========================================
+
     // Функция открытие корзины
 	const openCart = ()=>{
-		cart.addEventListener("click", function (e) {
-			e.preventDefault()
-			cartContent.classList.add("active")
-			cartBar.classList.add("active")
-			document.querySelector("body").classList.add("_lock")
-			// document.querySelector("body").classList.add("rmMrgScroll")
-		})
-	}
-	openCart()
+		cartContent.classList.add("active");
+		cartBar.classList.add("active");
+		document.querySelector("body").classList.add("_lock");
+	};
 
+	cart.addEventListener("click", function (e) {
+		e.preventDefault();
+		openCart(); // Открытие корзины
+	});
 
-    // Функция закрытия корзины на иконку
-    cartArr.addEventListener("click", function () {
-        cartContent.classList.remove("active")
+     // Закртытие бокого меню корзины
+	const closeCart = ()=>{
+		cartContent.classList.remove("active")
         cartBar.classList.remove("active")
         document.querySelector("body").classList.remove("_lock")
-		// document.querySelector("body").classList.remove("rmMrgScroll")
+	}
 
+    // Закрытия корзины на нажитие иконки минуса
+    cartArr.addEventListener("click", function () {
+        closeCart()
     })
 
-    // Функция закрытия корзины при клике свободную область
+    // Закрытия корзины при клике свободную область
     cartBar.addEventListener('click', function (e) {
         if (e.target.classList.contains("cart-bar")){
-            cartContent.classList.remove("active")
-            cartBar.classList.remove("active")
-            document.querySelector("body").classList.remove("_lock")
-			// document.querySelector("body").classList.remove("rmMrgScroll")
+            closeCart()
         }
-
     })
+
+    //===================================================
+
     // Определение функций при счете корзины
     // const randomId = () => {
     //     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     // };
 
 
-	// Добавление товара в корзину
-		const btnPopupBy = document.querySelectorAll('.popup__btn');
+	//  Изменение поведение кнопки продукта при добавлении его в корзину
 
-		function AddСart(e){
+	    // Лист кнопок товаров
+		const btnPopupBuy = document.querySelectorAll('.popup__btn');
+
+        // Функция для изменения состояния кнопки на состояние "Загрузка"
+		const changeStateBtnLoading = () =>{
+			    CirrentTarget.classList.remove('hover');
+				CirrentTarget.querySelector('.btn__text').innerHTML = ''
+				CirrentTarget.querySelector('.loading').classList.add('loading-visible')
+				CirrentTarget.disabled = true
+		}
+
+		const clickOnBtnProduct = (e) => {
 			let CirrentTarget = e.currentTarget;
 			e.preventDefault()
+
+			// Если начальное состояние кнопки "Добавить в корзину"  - отвечает артрибут data-isBuy - false
 			if(CirrentTarget.getAttribute('data-isBuy')=='false'){
 
-
+				// Меняем состояние кнопки на состояние "Загрузка"
 				CirrentTarget.classList.remove('hover');
 				CirrentTarget.querySelector('.btn__text').innerHTML = ''
 				CirrentTarget.querySelector('.loading').classList.add('loading-visible')
 				CirrentTarget.disabled = true
-			
-			
+				// changeStateBtnLoading()
+
+				// Меняем состояние загрузки на состояние "Товар в корзине"
 				setTimeout(() => {
 					CirrentTarget.querySelector('.btn__text').innerHTML = 'В корзине';
 					CirrentTarget.querySelector('.loading').classList.remove('loading-visible');
@@ -367,9 +373,8 @@ document.addEventListener('DOMContentLoaded', function () {
 					CirrentTarget.setAttribute('data-isBuy','true');
 					CirrentTarget.disabled = ''
 					
-
-			
 				}, 1000);
+			// Если кнопка уже имеет состояние "Товар в корзине", то закрываем попап и открываем боковую коризну
 			}else{
 				cartContent.classList.add("active")
 				cartBar.classList.add("active")
@@ -381,39 +386,38 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 			
 		}
-
-		btnPopupBy.forEach(item=>{
-			item.addEventListener('click',AddСart)
+        // Проходимся по всем кнопкам и назнчаем события клика
+		btnPopupBuy.forEach(item => {
+			item.addEventListener('click',clickOnBtnProduct)
 		})
 
 
-
-///////////////////////
-
+    //===================================================
 
 
-
+    // Удаляем пробелы у цены
     const priceWithoutSpaces = (str) => {
         return str.replace(/\s/g, '');
     };
-
+    // Преоборазования 1000 в читаемое число 1 000
     const normalPrice = (str) => {
         return String(str).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
     };
 
+	// Увелечение текущей суммы
     const plusFullPrice = (currentPrice) => {
         return price += currentPrice;
     }
-
+    // Уменьшение текущей суммы
     const minusFullPrice = (currentPrice) => {
         return price -= currentPrice;
     }
-
+    // Вывод на страницу суммы добавленных товаров
     const printFullPrice = () => {
         fullPrice.textContent = `${normalPrice(price)}`;
         formFullPrise.textContent = `${normalPrice(price)}₽`;
     }
-
+    // Подсчет количества товаров и вывод на страницу кол-во товаров
     const printQuan = () => {
         let length = cartOut.querySelector(".cart__list").children.length;
         cartNumber.textContent = length
@@ -421,19 +425,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (length > 0) {
             cartBtn.classList.add("final__order-active")
+			
         } else {
             cartBtn.classList.remove("final__order-active")
+			
         }
 
 
     }
-	cartBtn.addEventListener('click',()=>{
-		document.querySelector('.cart__content').classList.add('_lock');
-	})
-	if(document.querySelector('.cart__content').classList.contains('active')){
+
+    // Добавляем класс _lock для корзины
+	const addLock = () =>{
 		document.querySelector('.cart__content').classList.add('_lock');
 	}
+    //  При клике на кнопку оформление заказа
+	cartBtn.addEventListener('click',()=>{
+		addLock()
+	})
+    
+	// Если корзина содержит активный класс
+	if(document.querySelector('.cart__content').classList.contains('active')){
+		addLock()
+	}
 
+	// Генерация html продукта
     const generateCartProduct = (img, title, price, id) => {
         return `
         <li class="cart__item item-cart">
@@ -452,65 +467,72 @@ document.addEventListener('DOMContentLoaded', function () {
 `
     }
 
-    // Цикл при котором вызываются функции для расчете цены и количества товара в корзине
-	
+	// Массив данных состоящих из айди добавленных товаров
 	let test = JSON.parse(localStorage.getItem('idProducts')) || [];
+
+    // Цикл при котором вызываются функции для расчете цены и количества товара в корзине
     for (let item of btns) {
+
+		// Установка атрибуа data-id попапа с продуктов и выдача ему айди
         item.closest(".popup__body").setAttribute("data-id", randomId++);
+
         item.addEventListener("click", function (e) {
-			e.preventDefault
+			e.preventDefault()
 			
+			// Событие при условии, что текущей кнопки атрибут data-isbuy = false (Значит, что на кнопку еще не нажимали)
 			if(e.currentTarget.getAttribute('data-isbuy')=='false'){
+
+				// Получаем данные из текущего продукта при клике на добавление в корзину
 				let parent = e.currentTarget.closest(".popup__body");
 				let id = parent.dataset.id;
 				let img = parent.querySelector(".popup__img-img").getAttribute("src");
 				let title = parent.querySelector(".popup__title").textContent;
 				let priceString = parent.querySelector(".popup__price").textContent;
 				let priceNumber = parseInt(priceWithoutSpaces(parent.querySelector(".popup__price").textContent));
-	
+
+	            // Генерируемый полученный продукт и добавляем его в панешь корзины
 				cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
 
-
-				
+                // Проверяем, что повторно не добавлен один и тот же продукт
 				if(!test.some((item=>item.id===id))){
 					test.push({id:id})
 				}
+				// Обновляем Storage, расчитываем сумму и выводим сумму и количество товаров на страницу
 				updateToStorage()
 				plusFullPrice(priceNumber)
 				printFullPrice()
 				printQuan()
-	
-				
-				
 			}
-
-            
         })
-
     }
+
     //  Перерасчет цены при удалении товара из корзины
     const deleteProduct = function (deletProd) {
+
+		// id текущего продукта который удалили
         let id = deletProd.querySelector(".item-cart__content").getAttribute('id');
+		// Удаляем текущий продукт со страницы и обновляем количество продуктов на странице
         deletProd.remove()
         printQuan()
 
-
+        // Вызываем функцию для синхронизации продуктов к корзине и на странице
 		synchronizeButton(id)
+
 
         if (printQuan() == 0) {
             currentPrice -= currentPrice
         }
+		// Преобразовываем цену продукта в нормальное число
         let currentPrice = parseInt(priceWithoutSpaces(deletProd.querySelector('.item-cart__content').querySelector(".item-cart__content2").querySelector(".item-cart__prise").textContent))
 
-
+        // Вычитаем из суммы удаленный продукт и печатаем новую сумму и обновляем Storage
         minusFullPrice(currentPrice)
         printFullPrice()
-
         updateToStorage()
 
-
+       // Функция для синхронизации продуктов к корзине и на странице
 		function synchronizeButton(id) {
-			// Найдём кнопку товара по его data-id
+			// Ищем кнопку товара по его data-id
 			let productButton = document.querySelector(`.popup__body[data-id="${id}"]`).querySelector('button');
 		
 			// Изменяем атрибуты и визуальное состояние кнопки
@@ -520,38 +542,47 @@ document.addEventListener('DOMContentLoaded', function () {
 			productButton.classList.remove('ShopСart');
 		}
 
-
-
-
     }
+
+	// Если кликаем на иконку удаления товара
     cartList.addEventListener('click', function (e) {
         if (e.target.classList.contains("item-cart__close")) {
+			// Получем айди удаленного продукта
 			let productId = e.target.closest(".cart__item").querySelector('.item-cart__content').getAttribute('id')
+			// Запускаем функции для удаления продукта из корзины и массива продуктов
 			removeFromCart(productId)
             deleteProduct(e.target.closest(".cart__item"))
         }
     })
-
+    // Функция для удаления товаров из массива и продуктами, которые туда добавили
 	function removeFromCart(productId){
 		test = test.filter((item=>{
 			return item.id !== productId;
 		}))
 		updateToStorage();		
 	}
+
     // Local Store
+
+	// Подсчет всей суммы продуктов из корзины
     const countSumm = function () {
         document.querySelectorAll('.cart__item').forEach(el => {
             price += parseInt(priceWithoutSpaces(el.querySelector('.item-cart__prise').textContent))
         })
     }
+	// Инициализация локального хранения
     const initialStore = function () {
+		
         if (localStorage.getItem('products') !== null) {
+			// html продукт который был в locak добавляем в панель корзины
             cartList.innerHTML = localStorage.getItem('products')
+			// Печатамем количество товара и общую сумму
             printQuan()
             countSumm()
             printFullPrice()
         }
 
+        // Проходим по всем кнопкам с атрибуами айди, которые есть в локальнос хранилише и сихнронизуем их с товарами из корзины, добавлем стиль по поведение
 		test.forEach((item=>{
 			let button = document.querySelector(`.popup__body[data-id='${item.id}']`).querySelector('button');
 			button.setAttribute('data-isbuy', 'true');
@@ -560,8 +591,10 @@ document.addEventListener('DOMContentLoaded', function () {
             button.classList.add('ShopСart');
 		}))
     };
+	// Иницилизуем данные из локал
     initialStore()
 
+    // Функция для обновления локального хранилища
     const updateToStorage = function () {
         let parent = cartList
         let html = parent.innerHTML;
@@ -572,38 +605,36 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             localStorage.removeItem('products')
 			localStorage.removeItem('idProducts')
-			test = [];
         }
 
     };
-	
+	// Функция для очистки всей корзины и локал
 	const clearCart = () => {
-		cartNumber.innerHTML = '0';
-		formAllProducts.textContent = '0';
-		fullPrice.textContent = '0';
-		cartList.innerHTML = '';
-		formFullPrise.textContent = '0';
-		localStorage.clear();
-		test = [];
-		
-		
+		cartNumber.innerHTML = '0'; // Количество товаров 0
+		formAllProducts.textContent = '0'; //Количество товаров в форме офорлмения 0
+		fullPrice.textContent = '0'; // Общая сумма продуктов 0
+		cartList.innerHTML = ''; // Очистка корзины с продуктами
+		formFullPrise.textContent = '0'; // Общая сумма продуктов форме офорлмения  0
+		localStorage.clear(); // Очитска локал
+		test = []; // Очитска массива с айди добавленных продуктов
 	}
-
+    
+	// Событие нажатие на кнопку "Очистить корзину"
 	clearCartBtn.addEventListener('click',()=>{
+		// Очистка корзины и локал
 		clearCart()
+
+		// Проходим по всем кнопкам продуктов и сбрасываем их до начального состояния
 		btns.forEach((item=>{
+			// Устаналиваем атрибут в начальное состояние
 			item.setAttribute('data-isBuy','false');
-		}))
-		btns.forEach((item=>{
+
+			// Устаналиваем начальное поведение и стиль
 			item.querySelector('.btn__text').textContent = 'Добавить в корзину'
 			item.classList.add('hover');
 			item.classList.remove('ShopСart');
-			
-			
 		}))
 	})
-	
-	
 });
 
 
