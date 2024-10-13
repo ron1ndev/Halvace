@@ -1,228 +1,145 @@
-var ua = window.navigator.userAgent;
-var msie = ua.indexOf("MSIE ");
-var isMobile = { Android: function () { return navigator.userAgent.match(/Android/i); }, BlackBerry: function () { return navigator.userAgent.match(/BlackBerry/i); }, iOS: function () { return navigator.userAgent.match(/iPhone|iPad|iPod/i); }, Opera: function () { return navigator.userAgent.match(/Opera Mini/i); }, Windows: function () { return navigator.userAgent.match(/IEMobile/i); }, any: function () { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); } };
-function isIE() {
-	ua = navigator.userAgent;
-	var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
-	return is_ie;
-}
-if (isIE()) {
-	document.querySelector('html').classList.add('ie');
-}
-if (isMobile.any()) {
-	document.querySelector('html').classList.add('_touch');
-}
-
-function testWebP(callback) {
-	var webP = new Image();
-	webP.onload = webP.onerror = function () {
-		callback(webP.height == 2);
-	};
-	webP.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
-}
-testWebP(function (support) {
-	if (support === true) {
-		document.querySelector('html').classList.add('_webp');
-	} else {
-		document.querySelector('html').classList.add('_no-webp');
-	}
-});
-
-function ibg() {
-	if (isIE()) {
-		let ibg = document.querySelectorAll("._ibg");
-		for (var i = 0; i < ibg.length; i++) {
-			if (ibg[i].querySelector('img') && ibg[i].querySelector('img').getAttribute('src') != null) {
-				ibg[i].style.backgroundImage = 'url(' + ibg[i].querySelector('img').getAttribute('src') + ')';
-			}
-		}
-	}
-}
-ibg();
-
-window.addEventListener("load", function () {
-	if (document.querySelector('.wrapper')) {
-		setTimeout(function () {
-			document.querySelector('.wrapper').classList.add('_loaded');
-		}, 0);
-	}
-});
+"use strict";
+document.addEventListener('DOMContentLoaded', function () {
 
 let unlock = true;
 
-//=================
-//ActionsOnHash
-if (location.hash) {
-	const hsh = location.hash.replace('#', '');
-	if (document.querySelector('.popup_' + hsh)) {
-		popup_open(hsh);
-	} else if (document.querySelector('div.' + hsh)) {
-		_goto(document.querySelector('.' + hsh), 500, '');
-	}
-}
-//=================
-//Menu
-let iconMenu = document.querySelector(".icon-menu");
-if (iconMenu != null) {
-	let delay = 500;
-	let menuBody = document.querySelector(".menu__body");
-	iconMenu.addEventListener("click", function (e) {
-		if (unlock) {
-			body_lock(delay);
-			iconMenu.classList.toggle("_active");
-			menuBody.classList.toggle("_active");
+	// Функционал открытия попапов на странице, блокировка контента при октрытии попапа
+	//BodyLock
+	function body_lock(delay) {
+		let body = document.querySelector("body");
+		if (body.classList.contains('_lock')) {
+			body_lock_remove(delay);
+		} else {
+			body_lock_add(delay);
 		}
-	});
-};
-function menu_close() {
-	let iconMenu = document.querySelector(".icon-menu");
-	let menuBody = document.querySelector(".menu__body");
-	iconMenu.classList.remove("_active");
-	menuBody.classList.remove("_active");
-}
-//=================
-//BodyLock
-function body_lock(delay) {
-	let body = document.querySelector("body");
-	if (body.classList.contains('_lock')) {
-		body_lock_remove(delay);
-	} else {
-		body_lock_add(delay);
 	}
-}
-function body_lock_remove(delay) {
-	let body = document.querySelector("body");
-	if (unlock) {
-		let lock_padding = document.querySelectorAll("._lp");
-		setTimeout(() => {
+	function body_lock_remove(delay) {
+		let body = document.querySelector("body");
+		if (unlock) {
+			let lock_padding = document.querySelectorAll("._lp");
+			setTimeout(() => {
+				for (let index = 0; index < lock_padding.length; index++) {
+					const el = lock_padding[index];
+					el.style.paddingRight = '0px';
+				}
+				body.style.paddingRight = '0px';
+				body.classList.remove("_lock");
+			}, delay);
+
+			unlock = false;
+			setTimeout(function () {
+				unlock = true;
+			}, delay);
+		}
+	}
+	function body_lock_add(delay) {
+		let body = document.querySelector("body");
+		if (unlock) {
+			let lock_padding = document.querySelectorAll("._lp");
 			for (let index = 0; index < lock_padding.length; index++) {
 				const el = lock_padding[index];
-				el.style.paddingRight = '0px';
+				el.style.paddingRight = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
 			}
-			body.style.paddingRight = '0px';
-			body.classList.remove("_lock");
-		}, delay);
+			body.style.paddingRight = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+			body.classList.add("_lock");
 
-		unlock = false;
-		setTimeout(function () {
-			unlock = true;
-		}, delay);
-	}
-}
-function body_lock_add(delay) {
-	let body = document.querySelector("body");
-	if (unlock) {
-		let lock_padding = document.querySelectorAll("._lp");
-		for (let index = 0; index < lock_padding.length; index++) {
-			const el = lock_padding[index];
-			el.style.paddingRight = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+			unlock = false;
+			setTimeout(function () {
+				unlock = true;
+			}, delay);
 		}
-		body.style.paddingRight = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
-		body.classList.add("_lock");
-
-		unlock = false;
-		setTimeout(function () {
-			unlock = true;
-		}, delay);
 	}
-}
-//=================
+	//=================
+
+	//Popups
+	let popup_link = document.querySelectorAll('._popup-link');
+	let popups = document.querySelectorAll('.popup');
+	for (let index = 0; index < popup_link.length; index++) {
+		const el = popup_link[index];
+		el.addEventListener('click', function (e) {
 
 
-
-
-//Popups
-let popup_link = document.querySelectorAll('._popup-link');
-let popups = document.querySelectorAll('.popup');
-for (let index = 0; index < popup_link.length; index++) {
-	const el = popup_link[index];
-	el.addEventListener('click', function (e) {
-
-
+			if (unlock) {
+				let item = el.getAttribute('href').replace('#', '');
+				let video = el.getAttribute('data-video');
+				popup_open(item, video);
+			}
+			e.preventDefault();
+		})
+	}
+	for (let index = 0; index < popups.length; index++) {
+		const popup = popups[index];
+		popup.addEventListener("click", function (e) {
+			if (!e.target.closest('.popup__body')) {
+				popup_close(e.target.closest('.popup'));
+				
+			};
+		});
+	}
+	function popup_open(item, video = '') {
+		let activePopup = document.querySelectorAll('.popup._active');
+		if (activePopup.length > 0) {
+			popup_close('', false);
+		}
+		let curent_popup = document.querySelector('.popup_' + item);
+		if (curent_popup && unlock) {
+			if (video != '' && video != null) {
+				let popup_video = document.querySelector('.popup_video');
+				popup_video.querySelector('.popup__video').innerHTML = '<iframe src="https://www.youtube.com/embed/' + video + '?autoplay=1"  allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+			}
+			if (!document.querySelector('.menu__body._active')) {
+				body_lock_add(500);
+				
+			}
+			curent_popup.classList.add('_active');
+			history.pushState('', '', '#' + item);
+		}
+		
+	}
+	function popup_close(item, bodyUnlock = true) {
 		if (unlock) {
-			let item = el.getAttribute('href').replace('#', '');
-			let video = el.getAttribute('data-video');
-			popup_open(item, video);
-		}
-		e.preventDefault();
-	})
-}
-for (let index = 0; index < popups.length; index++) {
-	const popup = popups[index];
-	popup.addEventListener("click", function (e) {
-		if (!e.target.closest('.popup__body')) {
-			popup_close(e.target.closest('.popup'));
-			
-		};
-	});
-}
-function popup_open(item, video = '') {
-	let activePopup = document.querySelectorAll('.popup._active');
-	if (activePopup.length > 0) {
-		popup_close('', false);
-	}
-	let curent_popup = document.querySelector('.popup_' + item);
-	if (curent_popup && unlock) {
-		if (video != '' && video != null) {
-			let popup_video = document.querySelector('.popup_video');
-			popup_video.querySelector('.popup__video').innerHTML = '<iframe src="https://www.youtube.com/embed/' + video + '?autoplay=1"  allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-		}
-		if (!document.querySelector('.menu__body._active')) {
-			body_lock_add(500);
-			
-		}
-		curent_popup.classList.add('_active');
-		history.pushState('', '', '#' + item);
-	}
-	
-}
-function popup_close(item, bodyUnlock = true) {
-	if (unlock) {
-		if (!item) {
-			for (let index = 0; index < popups.length; index++) {
-				const popup = popups[index];
-				let video = popup.querySelector('.popup__video');
+			if (!item) {
+				for (let index = 0; index < popups.length; index++) {
+					const popup = popups[index];
+					let video = popup.querySelector('.popup__video');
+					if (video) {
+						video.innerHTML = '';
+					}
+					popup.classList.remove('_active');
+				}
+			} else {
+				let video = item.querySelector('.popup__video');
 				if (video) {
 					video.innerHTML = '';
 				}
-				popup.classList.remove('_active');
+				item.classList.remove('_active');
 			}
-		} else {
-			let video = item.querySelector('.popup__video');
-			if (video) {
-				video.innerHTML = '';
+			if (!document.querySelector('.menu__body._active') && bodyUnlock && !document.querySelector('.cart__content').classList.contains('active')) {
+
+				body_lock_remove(500);
+
+
 			}
-			item.classList.remove('_active');
+			history.pushState('', '', window.location.href.split('#')[0]);
 		}
-		if (!document.querySelector('.menu__body._active') && bodyUnlock && !document.querySelector('.cart__content').classList.contains('active')) {
-
-			body_lock_remove(500);
-
-
+	}
+	let popup_close_icon = document.querySelectorAll('.popup__close,._popup-close');
+	if (popup_close_icon) {
+		for (let index = 0; index < popup_close_icon.length; index++) {
+			const el = popup_close_icon[index];
+			el.addEventListener('click', function () {
+				popup_close(el.closest('.popup'));
+			})
 		}
-		history.pushState('', '', window.location.href.split('#')[0]);
 	}
-}
-let popup_close_icon = document.querySelectorAll('.popup__close,._popup-close');
-if (popup_close_icon) {
-	for (let index = 0; index < popup_close_icon.length; index++) {
-		const el = popup_close_icon[index];
-		el.addEventListener('click', function () {
-			popup_close(el.closest('.popup'));
-		})
-	}
-}
-document.addEventListener('keydown', function (e) {
-	if (e.code === 'Escape') {
-		popup_close();
-	}
-});
+	document.addEventListener('keydown', function (e) {
+		if (e.code === 'Escape') {
+			popup_close();
+		}
+	});
 
 
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    // Бургер
+    // Бургер-меню
     let headerMburger = document.querySelector(".header__burger"),
         headerMenu = document.querySelector(".header__menu"),
         body = document.querySelector("body");
@@ -255,8 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
     })
-
-	
 
 	// Функционал интернет магазина
 
@@ -394,7 +309,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //===================================================
 
-
     // Удаляем пробелы у цены
     const priceWithoutSpaces = (str) => {
         return str.replace(/\s/g, '');
@@ -458,7 +372,11 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="item-cart__content2">
             <div class="item-cart__title">${title}</div>
             <div class="item-cart__prise">${price}</div>
-            
+            <div class="item-cart__сounter">
+				<div class="сounter__plus">+</div>
+				<div class="сounter__count">1</div>
+				<div class="сounter__minus">-</div>
+			</div>
         </div>
         </div>
         <div class="item-cart__close"></div>
@@ -543,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
     }
-
+	let productСount = {};
 	// Если кликаем на иконку удаления товара
     cartList.addEventListener('click', function (e) {
         if (e.target.classList.contains("item-cart__close")) {
@@ -553,6 +471,45 @@ document.addEventListener('DOMContentLoaded', function () {
 			removeFromCart(productId)
             deleteProduct(e.target.closest(".cart__item"))
         }
+		if(e.target.classList.contains('сounter__plus')){
+			let idProdutCount = e.target.closest('.item-cart__content').id;
+			let currentPrice = e.target.closest('.item-cart__content2').querySelector('.item-cart__prise').textContent;
+			let currentCount = e.target.closest('.item-cart__content2').querySelector('.сounter__count');
+
+			if (!productСount[idProdutCount]) {
+				productСount[idProdutCount] = 1; // Если товара нет в объекте, начинаем с 1
+			}
+			productСount[idProdutCount]++;
+	
+			// Обновляем количество на странице
+			currentCount.textContent = productСount[idProdutCount];
+
+			
+			price += parseInt(priceWithoutSpaces(currentPrice));
+			printFullPrice();
+
+			console.log(productСount)
+
+			
+		}
+		if(e.target.classList.contains('сounter__minus')){
+			let idProdutCount = e.target.closest('.item-cart__content').id;
+			let currentPrice = e.target.closest('.item-cart__content2').querySelector('.item-cart__prise').textContent;
+			let currentCount = e.target.closest('.item-cart__content2').querySelector('.сounter__count');
+			if(productСount[idProdutCount]>1){
+
+				if (!productСount[idProdutCount]) {
+					productСount[idProdutCount] = 1; // Если товара нет в объекте, начинаем с 1
+				}
+				productСount[idProdutCount]--;
+		
+				// Обновляем количество на странице
+				currentCount.textContent = productСount[idProdutCount];
+				price -= parseInt(priceWithoutSpaces(currentPrice));
+				printFullPrice();
+			}
+			
+		}
     })
     // Функция для удаления товаров из массива и продуктами, которые туда добавили
 	function removeFromCart(productId){
@@ -617,6 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		formFullPrise.textContent = '0'; // Общая сумма продуктов форме офорлмения  0
 		localStorage.clear(); // Очитска локал
 		test = []; // Очитска массива с айди добавленных продуктов
+		price = 0;
 	}
     
 	// Событие нажатие на кнопку "Очистить корзину"
@@ -638,18 +596,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-
-
-
-// Dynamic Adapt v.1
-// HTML data-da="where(uniq class name),when(breakpoint),position(digi)"
-// e.x. data-da=".item,992,2"
-// Andrikanych Yevhen 2020
-// https://www.youtube.com/c/freelancerlifestyle
-
-"use strict";
-
+// Динамический адапатив
 function DynamicAdapt(type) {
 	this.type = type;
 }
@@ -813,6 +760,7 @@ if(windowWidth<=760){
 }
 
 
+// swiper
 const swiper = new Swiper('.swiper', {
 	// Optional parameters
 	direction: 'horizontal',

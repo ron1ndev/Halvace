@@ -1341,11 +1341,12 @@ body.ie ._ibg img {
 
 .header__listt {
   display: -ms-grid;
-  display: grid;
+  /* display: grid;
   -ms-grid-columns: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
   -ms-grid-rows: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr; */
+  display: flex;
   margin-right: 15px;
 }
 
@@ -2386,7 +2387,11 @@ border-radius:4px;
 
 .item-cart__content2 {
   position: relative;
-  cursor: pointer;
+  /* cursor: pointer; */
+  display: flex;
+  flex-direction: column;
+  align-items:start;
+
 }
 
 .item-cart__title {
@@ -2425,6 +2430,23 @@ border-radius:4px;
   font-size: 16px;
   background: none;
 
+}
+.item-cart__сounter{
+  padding: 10px 0 0 0;
+display: flex;
+font-size: 32px;
+justify-content: space-between;
+align-items:center;
+column-gap:10px;
+}
+.сounter__plus{
+cursor: pointer;
+}
+.сounter__minus{
+  cursor: pointer;
+}
+.сounter__count{
+  font-size: 16px;
 }
 
 @media (min-width: 991.98px) {
