@@ -340,7 +340,8 @@ let unlock = true;
 			cartNumber.textContent = length
 			formAllProducts.textContent = length
 		
-
+		console.log(length)
+		console.log(u)
 
         if (length > 0) {
             cartBtn.classList.add("final__order-active")
@@ -396,6 +397,17 @@ let unlock = true;
 	let productСount = {};
 	let productPrice = {};
 
+	const addСount = (count)=>{
+
+		
+			
+		
+		localStorage.setItem('allCountProduts',count)
+	
+		
+		return productAllСount.count = count;
+	}
+
 	// Массив данных состоящих из айди добавленных товаров
 	let test = JSON.parse(localStorage.getItem('idProducts')) || [];
 
@@ -437,6 +449,8 @@ let unlock = true;
 				Object.values(productСount).map((item=>{
 					return sum += item
 				}))
+				addСount(sum)
+				console.log(productAllСount.count)
 				cartNumber.textContent = sum
 			    formAllProducts.textContent = sum
 				console.log(productСount)
@@ -509,6 +523,27 @@ let unlock = true;
 		    // Очищаем цену и количество удаленного продукта
 			productPrice[productId] = 0;
 			productСount[productId] = 0;
+			// localStorage.setItem('productСount',JSON.stringify(productСount[productId] = 0))
+
+			
+			Object.values(productСount).map((item=>{
+				return sum += item
+			}))
+
+			let length2 = cartOut.querySelector(".cart__list").children.length;
+
+			if(length2<=0){
+				cartNumber.textContent = length2;
+			}else{
+				printQuan(sum)
+			}
+	
+
+			
+			// addСount(0)
+			// printQuan()
+		console.log(productСount)
+
 
         }
 		if(e.target.classList.contains('сounter__plus')){
@@ -527,21 +562,26 @@ let unlock = true;
 			productPrice[idProdutCount] += currentPrice
 	
 			// Обновляем количество на странице
+			localStorage.setItem('productСount',JSON.stringify(productСount))
+
 			currentCount.textContent = productСount[idProdutCount];
 			// currentPriceContent.textContent = `${normalPrice(productPrice[idProdutCount])}₽`
-			productAllСount.count += productСount[idProdutCount]
+			
 			price += currentPrice;
 			printFullPrice();
-			
+			console.log(productPrice)
 			// console.log(productPrice)
-			// console.log(productAllСount.count)
-			console.log(productСount)
+			
+			
 			
             
 			
 			Object.values(productСount).map((item=>{
 				return sum += item
 			}))
+			addСount(sum)
+			
+			console.log(productAllСount.count)
 			console.log(sum)
 			printQuan(+sum)
 			sum=0 
@@ -573,6 +613,7 @@ let unlock = true;
 					productPrice[idProdutCount] -= currentPrice
 			
 					// Обновляем количество на странице
+					localStorage.setItem('productСount',JSON.stringify(productСount))
 					currentCount.textContent = productСount[idProdutCount];
 		            
 					
@@ -582,6 +623,9 @@ let unlock = true;
 					Object.values(productСount).map((item=>{
 						return Math.abs(sum += item)
 					}))
+					productAllСount.count = sum
+					console.log(productAllСount.count)
+					addСount(sum)
 					console.log(sum)
 					printQuan(sum)
 					sum=0 
@@ -617,10 +661,28 @@ let unlock = true;
 			// html продукт который был в locak добавляем в панель корзины
             cartList.innerHTML = localStorage.getItem('products')
 			// Печатамем количество товара и общую сумму
-            printQuan()
+            printQuan(0)
             countSumm()
-            printFullPrice()
+            // printFullPrice()
+			fullPrice.textContent = `${normalPrice(price)}`;
+            formFullPrise.textContent = `${normalPrice(price)}₽`;
+			cartNumber.textContent = localStorage.getItem('allCountProduts')?localStorage.getItem('allCountProduts'):0
+			formAllProducts.textContent = localStorage.getItem('allCountProduts')?localStorage.getItem('allCountProduts'):0
+
+
+			
         }
+		if (localStorage.getItem('productСount') !== null) {
+			productСount = JSON.parse(localStorage.getItem('productСount'));
+             Object.keys(productСount).forEach((id=>{
+				let quantityElement = document.getElementById(id).querySelector('.сounter__count');
+				if(quantityElement){
+					quantityElement.textContent = productСount[id]
+				}
+			 }))
+
+
+		}
 
         // Проходим по всем кнопкам с атрибуами айди, которые есть в локальнос хранилише и сихнронизуем их с товарами из корзины, добавлем стиль по поведение
 		test.forEach((item=>{
