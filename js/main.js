@@ -340,8 +340,7 @@ let unlock = true;
 			cartNumber.textContent = length
 			formAllProducts.textContent = length
 		
-		console.log(length)
-		console.log(u)
+
 
         if (length > 0) {
             cartBtn.classList.add("final__order-active")
@@ -450,12 +449,14 @@ let unlock = true;
 					return sum += item
 				}))
 				addСount(sum)
-				console.log(productAllСount.count)
+				
 				cartNumber.textContent = sum
 			    formAllProducts.textContent = sum
-				console.log(productСount)
+				
 				sum = 0;
 				// printQuan()
+				localStorage.setItem('productСount',JSON.stringify(productСount))
+				
 			}
         })
     }
@@ -514,6 +515,7 @@ let unlock = true;
 	// Если кликаем на иконку удаления товара
     cartList.addEventListener('click', function (e) {
         if (e.target.classList.contains("item-cart__close")) {
+			
 			// Получем айди удаленного продукта
 			let productId = e.target.closest(".cart__item").querySelector('.item-cart__content').getAttribute('id')
 			// Запускаем функции для удаления продукта из корзины и массива продуктов
@@ -521,28 +523,51 @@ let unlock = true;
             deleteProduct(e.target.closest(".cart__item"))
 
 		    // Очищаем цену и количество удаленного продукта
+
+
 			productPrice[productId] = 0;
-			productСount[productId] = 0;
+			// productСount[productId] = 0;
 			// localStorage.setItem('productСount',JSON.stringify(productСount[productId] = 0))
 
 			
 			Object.values(productСount).map((item=>{
 				return sum += item
 			}))
+			
+			
+	
+				productAllСount.count = productAllСount.count - productСount[productId]
+				localStorage.setItem('allCountProduts', productAllСount.count)
+		
+			
+
 
 			let length2 = cartOut.querySelector(".cart__list").children.length;
 
 			if(length2<=0){
 				cartNumber.textContent = length2;
 			}else{
-				printQuan(sum)
-			}
-	
 
+				cartNumber.textContent = productAllСount.count;
+				formAllProducts.textContent = productAllСount.count;
+
+			}
+			
+	        delete productСount[productId];
+			if(Object.keys(productСount).length===0){
+				localStorage.removeItem('productСount')
+			}else{
+				localStorage.setItem('productСount',JSON.stringify(productСount))
+			}
+
+			
+
+			
+            
 			
 			// addСount(0)
 			// printQuan()
-		console.log(productСount)
+		
 
 
         }
@@ -569,8 +594,9 @@ let unlock = true;
 			
 			price += currentPrice;
 			printFullPrice();
-			console.log(productPrice)
-			// console.log(productPrice)
+			
+
+
 			
 			
 			
@@ -581,8 +607,10 @@ let unlock = true;
 			}))
 			addСount(sum)
 			
+			
 			console.log(productAllСount.count)
-			console.log(sum)
+			console.log(productСount[idProdutCount])
+			console.log(productAllСount.count-productСount[idProdutCount])
 			printQuan(+sum)
 			sum=0 
 
@@ -624,14 +652,14 @@ let unlock = true;
 						return Math.abs(sum += item)
 					}))
 					productAllСount.count = sum
-					console.log(productAllСount.count)
 					addСount(sum)
-					console.log(sum)
 					printQuan(sum)
+
+
+
 					sum=0 
 		
-					console.log(productPrice)
-
+					
 				}
 
 			}
@@ -672,6 +700,7 @@ let unlock = true;
 
 			
         }
+
 		if (localStorage.getItem('productСount') !== null) {
 			productСount = JSON.parse(localStorage.getItem('productСount'));
              Object.keys(productСount).forEach((id=>{
@@ -910,24 +939,24 @@ if(windowWidth<=760){
 
 
 // swiper
-const swiper = new Swiper('.swiper', {
-	// Optional parameters
-	direction: 'horizontal',
-	loop: true,
+// const swiper = new Swiper('.swiper', {
+// 	// Optional parameters
+// 	direction: 'horizontal',
+// 	loop: true,
   
-	// If we need pagination
-	pagination: {
-	  el: '.swiper-pagination',
-	},
+// 	// If we need pagination
+// 	pagination: {
+// 	  el: '.swiper-pagination',
+// 	},
   
-	// Navigation arrows
-	navigation: {
-	  nextEl: '.custom-next',
-	  prevEl: '.custom-prev',
-	},
+// 	// Navigation arrows
+// 	navigation: {
+// 	  nextEl: '.custom-next',
+// 	  prevEl: '.custom-prev',
+// 	},
   
-	// And if we need scrollbar
-	scrollbar: {
-	  el: '.swiper-scrollbar',
-	},
-  });
+// 	// And if we need scrollbar
+// 	scrollbar: {
+// 	  el: '.swiper-scrollbar',
+// 	},
+//   });
