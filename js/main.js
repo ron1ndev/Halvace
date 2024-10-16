@@ -390,16 +390,8 @@ let unlock = true;
 	let productPrice = {};
 
 
-
-	const addСount = (count)=>{
-
-	localStorage.setItem('allCountProduts',count)
-	
-		return productAllСount.count = count;
-	}
-
 	// Массив данных состоящих из айди добавленных товаров
-	let idProduts = JSON.parse(localStorage.getItem('idProducts')) || [];
+	let idProduts = JSON.parse(localStorage.getItem('productID')) || [];
 
     // Цикл при котором вызываются функции для расчете цены и количества товара в корзине
     for (let item of btns) {
@@ -423,7 +415,7 @@ let unlock = true;
 
 
 	            // Генерируемый полученный продукт и добавляем его в панешь корзины
-				cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceNumber, id));
+				cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
 
                 // Проверяем, что повторно не добавлен один и тот же продукт
 				if(!idProduts.some((item=>item.id===id))){
@@ -434,34 +426,31 @@ let unlock = true;
 
 				if (!productСount[id]) {
 					productСount[id] = 1; // Если товара нет в объекте, начинаем с 1
+					localStorage.setItem('productСount',JSON.stringify(productСount))
 				}
 				if(!productPrice[id]){
 					productPrice[id] = priceNumber;
 					localStorage.setItem('productPrice',JSON.stringify(productPrice))
 				}
+
 				
+                itemQuan = 0;
 
 				Object.values(productСount).map((item=>{
 					return itemQuan += item
 				}))
 
-				addСount(itemQuan)
+				productAllСount.count = itemQuan
+				localStorage.setItem('produtcAllCount',productAllСount.count)
+	
 				printQuan(itemQuan)
 
 				
-				
-				
+			
 				productAllprice.price += priceNumber;
 				localStorage.setItem('productAllprice',productAllprice.price);
-
 				
 				printFullPrice();
-				
-
-
-				itemQuan = 0;
-
-				localStorage.setItem('productСount',JSON.stringify(productСount))
 
 			}
         })
@@ -509,27 +498,30 @@ let unlock = true;
             deleteProduct(e.target.closest(".cart__item"))
 
 		    // Очищаем цену и количество удаленного продукта
-			
+			itemQuan = 0;	
+
 			Object.values(productСount).map((item=>{
 				return itemQuan += item
 			}))
-			addСount(itemQuan)
-			productAllСount.count -= productСount[productId];
-			
 
+
+			
+			productAllСount.count -= productСount[productId];
+
+			localStorage.setItem('produtcAllCount',productAllСount.count);
+			
 			
 			Object.values(productPrice).map((item=>{
 				return itemPrice += item
 			}))
 
-			productAllprice.price = itemPrice;
-
 			productAllprice.price -= productPrice[productId]
+
+			localStorage.setItem('productAllprice',productAllprice.price);
 
 			delete productPrice[productId];
 
 			
-	
 			printFullPrice();
 		
 			
@@ -545,17 +537,17 @@ let unlock = true;
 				cartNumber.textContent = lengthCart;
 				formAllProducts.textContent = lengthCart;
 				localStorage.setItem('productAllprice',0)
-				localStorage.setItem('allCountProduts',0)
+				localStorage.setItem('produtcAllCount',0)
 			}else{
 				cartNumber.textContent = productAllСount.count;
 				formAllProducts.textContent = productAllСount.count;
 				localStorage.setItem('productAllprice',productAllprice.price)
-				localStorage.setItem('allCountProduts',productAllСount.count)
+				localStorage.setItem('produtcAllCount',productAllСount.count)
 			}	
 
 	        delete productСount[productId];
 			updateToStorage();
-			itemQuan = 0;	
+			
         }
 		// Функционал клика плюс товара
 		if(e.target.classList.contains('сounter__plus')){
@@ -564,39 +556,18 @@ let unlock = true;
 			
 			productСount[productId]++;
 
-
-			
 			productPrice[productId] += currentPrice;
 
-	
-			localStorage.setItem('productPrice',JSON.stringify(productPrice))
-			
+			console.log(productСount)
 
-			Object.values(productPrice).map((item=>{
-				return itemPrice += item
-				
-			}))
+			setTotalPrice(); // Установка общего прайса продуктов
+		
+			printFullPrice(); // Выводим общий прайс продуктов на страницу
 
+			// Функция подсчета общего количества продуктов в корзине
+			setTotalCount(productId,currentCount);
 
-			productAllprice.price = itemPrice
-			itemPrice = 0;
-	
-			localStorage.setItem('productAllprice',productAllprice.price);
-			
-			printFullPrice();
-			
-
-			
-
-			
-			printCountProducts(productId,currentCount);
-
-
-
-			
-			
-			
-
+			printQuan(itemQuan)
 		}
 		// Функционал клика на минус товара
 		if(e.target.classList.contains('сounter__minus')){
@@ -607,59 +578,61 @@ let unlock = true;
 				productСount[productId]--
 
 				productPrice[productId] -= currentPrice;
-
-				localStorage.setItem('productPrice',JSON.stringify(productPrice))
-			
-
-				Object.values(productPrice).map((item=>{
-					return itemPrice += item
-					
-				}))
-	
-	
-				productAllprice.price = itemPrice
-
-				itemPrice = 0;
+				
+				setTotalPrice(); // Установка общего прайса продуктов
 		
-				localStorage.setItem('productAllprice',productAllprice.price);
-				
-				printFullPrice();
-
-
-				printPricetProducts ();
-
-				
-				
+				printFullPrice(); // Выводим общий прайс продуктов на страницу
 
 				// Функция подсчета общего количества продуктов в корзине
-				printCountProducts(productId,currentCount);
+				setTotalCount(productId,currentCount);
+
+				printQuan(itemQuan) // Выводим общее количество продуктов на страницу
 			}
 		}
     })
     // Функция подсчета общего количества продуктов в корзине
-	function printCountProducts (id,currentCount){
-
+	function setTotalCount (id,currentCount){
+		
+            // В storage устанавливаем информацию о каждом количестве отдельного продукта
 			localStorage.setItem('productСount',JSON.stringify(productСount))
+
+			// Меняем значение количества отдельного продукта
 			currentCount.textContent = productСount[id];
+            
+			itemQuan=0  //Обнуляем промежуточное количество всех продуктов
+
+            // Проходимся по всем продуктам и складываем количество каждого продукта в промежуточное количество
 			Object.values(productСount).map((item=>{
 				return itemQuan += item
 			}))
-			productAllСount.count = itemQuan
-			addСount(itemQuan)
-			printQuan(itemQuan)
-		    itemQuan=0 
+
+			productAllСount.count = itemQuan; // Устанавливаем общее количество продуктов
+
+            // В storage устаналиваем общие количество продуктов
+			localStorage.setItem('produtcAllCount',productAllСount.count)
 	}
 
-	function printPricetProducts (){
+    // Функция по расчету общей цены продуктов
+	function setTotalPrice (){
 
+		// В storage устанавливаем информацию о каждом прайсе отдельного продукта
+		localStorage.setItem('productPrice',JSON.stringify(productPrice))
+
+		itemPrice = 0; //Обнуляем промежуточный прайс всем продуктов
+
+		// Проходимся по всем продуктам и складываем цены в промежуточный прайс 
 		Object.values(productPrice).map((item=>{
 			return itemPrice += item
-		}))
-		productAllprice.price = itemPrice
+			
+		}));
 
-		printFullPrice();
-		itemPrice = 0;
+		productAllprice.price = itemPrice; // Устанавливаем общий прайс продуктов
+
+		// В storage устаналиваем общий прайс продуктов
+		localStorage.setItem('productAllprice',productAllprice.price);
 	}
+
+	
 
     // Функция для удаления товаров из массива и продуктами, которые туда добавили
 	function removeFromCart(productId){
@@ -671,12 +644,7 @@ let unlock = true;
 
     // Local Store
 
-	// Подсчет всей суммы продуктов из корзины
-    const countSumm = function () {
-        document.querySelectorAll('.cart__item').forEach(el => {
-            price += parseInt(priceWithoutSpaces(el.querySelector('.item-cart__prise').textContent))
-        })
-    }
+
 	// Инициализация локального хранения
     const initialStore = function () {
 		
@@ -686,14 +654,14 @@ let unlock = true;
 
 			// Печатамем количество товара и общую сумму
             printQuan(itemQuan)
-            countSumm()
-            // printFullPrice()
-			// fullPrice.textContent = `${normalPrice(price)}`;
-            // formFullPrise.textContent = `${normalPrice(price)}₽`;
-			cartNumber.textContent = localStorage.getItem('allCountProduts')?localStorage.getItem('allCountProduts'):0
-			formAllProducts.textContent = localStorage.getItem('allCountProduts')?localStorage.getItem('allCountProduts'):0
+
+			cartNumber.textContent = localStorage.getItem('produtcAllCount')?localStorage.getItem('produtcAllCount'):0
+			formAllProducts.textContent = localStorage.getItem('produtcAllCount')?localStorage.getItem('produtcAllCount'):0
+			productAllСount.count = parseInt(localStorage.getItem('produtcAllCount'));
+			productСount = localStorage.getItem('productСount')?JSON.parse(localStorage.getItem('productPrice')):{};
             productAllprice.price = parseInt(localStorage.getItem('productAllprice'))
 			productPrice = localStorage.getItem('productPrice')?JSON.parse(localStorage.getItem('productPrice')):{};
+
 			printFullPrice();
 
 
@@ -741,10 +709,10 @@ let unlock = true;
 
         if (html.length && idProduts.length) {
             localStorage.setItem('products', html)
-			localStorage.setItem('idProducts',id)
+			localStorage.setItem('productID',id)
         } else {
             localStorage.removeItem('products')
-			localStorage.removeItem('idProducts')
+			localStorage.removeItem('productID')
         }
 
     };
@@ -763,6 +731,7 @@ let unlock = true;
 		productAllСount.count = 0;
 		productAllprice.price = 0;
 		itemQuan = 0;
+		itemPrice = 0;
 	}
     
 	// Событие нажатие на кнопку "Очистить корзину"
