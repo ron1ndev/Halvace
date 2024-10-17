@@ -152,28 +152,32 @@ let unlock = true;
     })
 	// ============================
 
-    // Липкая щапка при скроле 
-	let mainBlock = document.querySelector(".main-block");
-	let header = document.querySelector(".header");
 
-    window.addEventListener('scroll', function () {
+// Липкая щапка при скроле 
+	if(document.querySelector(".main-block")){
+		
+		let mainBlock = document.querySelector(".main-block");
+		let header = document.querySelector(".header");
 
-        if (window.pageYOffset > 500 && document.querySelector(".main-block")) {
-            header.classList.add("header-fixed-active");
-            cartContent.classList.add("cart-top");
-            cartBtn.classList.add("final__order-active")
-            mainBlock.classList.add("main-block-padding");
-            cartContent.style.height = `95%`;
+		window.addEventListener('scroll', function () {
 
-        } else {
-            mainBlock.classList.remove("main-block-padding");
-			header.classList.remove("header-fixed-active");
-            cartContent.classList.remove("cart-top");
-            cartContent.style.height = `100%`;
+			if (window.pageYOffset > 80) {
+				header.classList.add("header-fixed-active");
+				cartContent.classList.add("cart-top");
+				cartBtn.classList.add("final__order-active")
+				mainBlock.classList.add("main-block-padding");
+				cartContent.style.height = `95%`;
 
-        }
-    })
+			} else {
+				mainBlock.classList.remove("main-block-padding");
+				header.classList.remove("header-fixed-active");
+				cartContent.classList.remove("cart-top");
+				cartContent.style.height = `100%`;
 
+			}
+		})
+
+		}
 	// ==========================
 
 
@@ -203,7 +207,8 @@ let unlock = true;
 	 cartList = document.querySelector(".cart__list"), // Лист товаров 
 	 cart = document.querySelector(".header__menu-cart"), // Иконка корзины
 	 cartNumber = document.querySelector(".header__menu-cart-number"), // Счетчик количества корзины
-     fullPrice = document.querySelector(".cart__full-price"); // Вывод итоговой цены
+     fullPrice = document.querySelector(".cart__full-price"), // Вывод итоговой цены
+	 cartArr = document.querySelector('.cart__arr');
 
 	// Кнопки
 	const clearCartBtn = document.querySelector('.cart__clear-btn'), // Кнопка для очистки товаров из корзины
@@ -251,10 +256,12 @@ let unlock = true;
         if (e.target.classList.contains("cart-bar")){
             closeCart();
         }
-		if(e.target.classList.contains("cart__arr")){
-			closeCart();
-		}
     });
+	cartArr.addEventListener('click', function (e) {
+    
+			closeCart();
+    });
+	
 
     //===================================================
 
