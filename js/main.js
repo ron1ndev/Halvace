@@ -262,6 +262,47 @@ let unlock = true;
 			closeCart();
     });
 	
+let startX, startY;
+
+const touchStartHandler = (event) => {
+    const touch = event.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+};
+
+const touchMoveHandler = (event) => {
+    // Здесь можно предотвратить прокрутку, если это нужно
+};
+
+const touchEndHandler = (event) => {
+    const touch = event.changedTouches[0];
+    const endX = touch.clientX;
+    const endY = touch.clientY;
+
+    const diffX = endX - startX;
+    const diffY = endY - startY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0) {
+			closeCart();
+            console.log('Swipe Right');
+        } else {
+            console.log('Swipe Left');
+        }
+    } else {
+        if (diffY > 0) {
+            console.log('Swipe Down');
+        } else {
+            console.log('Swipe Up');
+        }
+    }
+};
+
+
+cartContent.addEventListener('touchstart', touchStartHandler);
+cartContent.addEventListener('touchmove', touchMoveHandler);
+cartContent.addEventListener('touchend', touchEndHandler);
+
 
     //===================================================
 
