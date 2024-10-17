@@ -180,13 +180,35 @@ let unlock = true;
 		}
 	// ==========================
 
+// Перемещение элемента	
+const contactsList = document.querySelector('.header__listt'); // Навигационный список
+const navList = document.querySelector('.header__list'); // Список контактов
+const instagramElement = document.querySelector('.inst'); // Инстаграм
 
+const footerForm = document.querySelector('.footer__form');
+const footerMenuRight = document.querySelector('.footer__menu-right');
+const footerMenuLeft  = document.querySelector('.footer__menu-left');
+
+
+// Функция для перемещение инстаграмма при разрешении 993
+function moveElement(destinationContainer,fallbackContainer,element,breakpoint,prepend){
+	if(window.innerWidth<breakpoint){
+		destinationContainer.append(element);
+	}else{
+		if(fallbackContainer){
+			prepend?fallbackContainer.prepend(element):fallbackContainer.append(element);
+			
+		}
+	}
+}
+
+window.addEventListener('resize', function(){
+	moveElement(navList,contactsList,instagramElement,993,true);
+	moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
+});
 
 
 	
-
-
-
 	// Функционал интернет магазина
 
     // Боковая корзина 
@@ -266,17 +288,14 @@ let unlock = true;
 // Фунционал спайпов
 let startX, startY;
 
+// Координаты начала касания
 const touchStartHandler = (event) => {
     const touch = event.touches[0];
     startX = touch.clientX;
     startY = touch.clientY;
 
 };
-
-const touchMoveHandler = (event) => {
-    // Здесь можно предотвратить прокрутку, если это нужно
-};
-
+// Координаты конца касания
 const touchEndHandler = (event) => {
     const touch = event.changedTouches[0];
     const endX = touch.clientX;
@@ -288,22 +307,20 @@ const touchEndHandler = (event) => {
     if (Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX > 0) {
 			closeCart();
-            console.log('Swipe Right');
+            // Swipe Right
         } else {
-            console.log('Swipe Left');
+            // Swipe Left
         }
     } else {
         if (diffY > 0) {
-            console.log('Swipe Down');
+            // Swipe Down
         } else {
-            console.log('Swipe Up');
+            // Swipe up
         }
     }
 };
 
-
 cartContent.addEventListener('touchstart', touchStartHandler);
-cartContent.addEventListener('touchmove', touchMoveHandler);
 cartContent.addEventListener('touchend', touchEndHandler);
 
 
@@ -807,161 +824,6 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
 
 
-
-// Динамический адапатив
-function DynamicAdapt(type) {
-	this.type = type;
-}
-
-DynamicAdapt.prototype.init = function () {
-	const _this = this;
-	// массив объектов
-	this.оbjects = [];
-	this.daClassname = "_dynamic_adapt_";
-	// массив DOM-элементов
-	this.nodes = document.querySelectorAll("[data-da]");
-
-	// наполнение оbjects объктами
-	for (let i = 0; i < this.nodes.length; i++) {
-		const node = this.nodes[i];
-		const data = node.dataset.da.trim();
-		const dataArray = data.split(",");
-		const оbject = {};
-		оbject.element = node;
-		оbject.parent = node.parentNode;
-		оbject.destination = document.querySelector(dataArray[0].trim());
-		оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : "767";
-		оbject.place = dataArray[2] ? dataArray[2].trim() : "last";
-		оbject.index = this.indexInParent(оbject.parent, оbject.element);
-		this.оbjects.push(оbject);
-	}
-
-	this.arraySort(this.оbjects);
-
-	// массив уникальных медиа-запросов
-	this.mediaQueries = Array.prototype.map.call(this.оbjects, function (item) {
-		return '(' + this.type + "-width: " + item.breakpoint + "px)," + item.breakpoint;
-	}, this);
-	this.mediaQueries = Array.prototype.filter.call(this.mediaQueries, function (item, index, self) {
-		return Array.prototype.indexOf.call(self, item) === index;
-	});
-
-	// навешивание слушателя на медиа-запрос
-	// и вызов обработчика при первом запуске
-	for (let i = 0; i < this.mediaQueries.length; i++) {
-		const media = this.mediaQueries[i];
-		const mediaSplit = String.prototype.split.call(media, ',');
-		const matchMedia = window.matchMedia(mediaSplit[0]);
-		const mediaBreakpoint = mediaSplit[1];
-
-		// массив объектов с подходящим брейкпоинтом
-		const оbjectsFilter = Array.prototype.filter.call(this.оbjects, function (item) {
-			return item.breakpoint === mediaBreakpoint;
-		});
-		matchMedia.addListener(function () {
-			_this.mediaHandler(matchMedia, оbjectsFilter);
-		});
-		this.mediaHandler(matchMedia, оbjectsFilter);
-	}
-};
-
-DynamicAdapt.prototype.mediaHandler = function (matchMedia, оbjects) {
-	if (matchMedia.matches) {
-		for (let i = 0; i < оbjects.length; i++) {
-			const оbject = оbjects[i];
-			оbject.index = this.indexInParent(оbject.parent, оbject.element);
-			this.moveTo(оbject.place, оbject.element, оbject.destination);
-		}
-	} else {
-		for (let i = 0; i < оbjects.length; i++) {
-			const оbject = оbjects[i];
-			if (оbject.element.classList.contains(this.daClassname)) {
-				this.moveBack(оbject.parent, оbject.element, оbject.index);
-			}
-		}
-	}
-};
-
-// Функция перемещения
-DynamicAdapt.prototype.moveTo = function (place, element, destination) {
-	element.classList.add(this.daClassname);
-	if (place === 'last' || place >= destination.children.length) {
-		destination.insertAdjacentElement('beforeend', element);
-		return;
-	}
-	if (place === 'first') {
-		destination.insertAdjacentElement('afterbegin', element);
-		return;
-	}
-	destination.children[place].insertAdjacentElement('beforebegin', element);
-}
-
-// Функция возврата
-DynamicAdapt.prototype.moveBack = function (parent, element, index) {
-	element.classList.remove(this.daClassname);
-	if (parent.children[index] !== undefined) {
-		parent.children[index].insertAdjacentElement('beforebegin', element);
-	} else {
-		parent.insertAdjacentElement('beforeend', element);
-	}
-}
-
-// Функция получения индекса внутри родителя
-DynamicAdapt.prototype.indexInParent = function (parent, element) {
-	const array = Array.prototype.slice.call(parent.children);
-	return Array.prototype.indexOf.call(array, element);
-};
-
-// Функция сортировки массива по breakpoint и place 
-// по возрастанию для this.type = min
-// по убыванию для this.type = max
-DynamicAdapt.prototype.arraySort = function (arr) {
-	if (this.type === "min") {
-		Array.prototype.sort.call(arr, function (a, b) {
-			if (a.breakpoint === b.breakpoint) {
-				if (a.place === b.place) {
-					return 0;
-				}
-
-				if (a.place === "first" || b.place === "last") {
-					return -1;
-				}
-
-				if (a.place === "last" || b.place === "first") {
-					return 1;
-				}
-
-				return a.place - b.place;
-			}
-
-			return a.breakpoint - b.breakpoint;
-		});
-	} else {
-		Array.prototype.sort.call(arr, function (a, b) {
-			if (a.breakpoint === b.breakpoint) {
-				if (a.place === b.place) {
-					return 0;
-				}
-
-				if (a.place === "first" || b.place === "last") {
-					return 1;
-				}
-
-				if (a.place === "last" || b.place === "first") {
-					return -1;
-				}
-
-				return b.place - a.place;
-			}
-
-			return b.breakpoint - a.breakpoint;
-		});
-		return;
-	}
-};
-
-const da = new DynamicAdapt("max");
-da.init();
 
 
 
