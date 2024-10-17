@@ -262,12 +262,15 @@ let unlock = true;
 			closeCart();
     });
 	
+
+// Фунционал спайпов
 let startX, startY;
 
 const touchStartHandler = (event) => {
     const touch = event.touches[0];
     startX = touch.clientX;
     startY = touch.clientY;
+
 };
 
 const touchMoveHandler = (event) => {
@@ -353,11 +356,12 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			}else{
 				cartContent.classList.add("active");
 				cartBar.classList.add("active");
+				popup_close();
 				mainBlock.classList.remove("main-block-padding");
 				header.classList.remove("header-fixed-active");
 				cartContent.classList.remove("cart-top");
 				cartContent.style.height = `100%`;
-				popup_close();
+				
 			}
 			
 		}
