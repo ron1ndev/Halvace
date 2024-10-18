@@ -208,7 +208,7 @@ body._lock {
 }
 .popup__descr_text{
   padding: 5px 0px;
-  font-size: 14px;
+  font-size: 12px;
   max-width: 250px;
 }
 .back{
@@ -965,7 +965,7 @@ body.ie ._ibg img {
   width: 100%;
   max-width: 900px;
   min-height: 600px;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -992,9 +992,6 @@ body.ie ._ibg img {
   top: -15px;
   right: 0;
   transform: rotate(45deg);
-
-
- 
 }
 
 .popup__close span::before{
@@ -1028,16 +1025,17 @@ body.ie ._ibg img {
 
 .popup__title {
   font-size: 24px;
+  font-weight: 700;
   line-height: 29px;
   color: #5e5e5e;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .popup__price {
-  font-size: 24px;
+  font-size: 20px;
   line-height: 29px;
   color: #5e5e5e;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .popup__articol {
@@ -1048,11 +1046,11 @@ body.ie ._ibg img {
 }
 
 .popup__descr {
-  font-size: 24px;
+  font-size: 14px;
   line-height: 29px;
   color: #5e5e5e;
-  margin-bottom: 60px;
-  max-width: 260px;
+  margin-bottom: 20px;
+  max-width: 280px;
 }
 
 .popup__quantity {
@@ -1089,6 +1087,7 @@ body.ie ._ibg img {
   text-align: center;
   min-width: 282px;
   transition: all 0.3s;
+  margin-bottom: 20px;
 }
 .popup__btn.hover:hover{
   background: #ffffff;
@@ -1130,7 +1129,7 @@ body.ie ._ibg img {
 .popup__info{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
 }
 .popup__descr{
   /* flex:1 1 100%; */
@@ -2446,6 +2445,8 @@ transition: transform 0.5s;
 .cart__clear-btn{
   font-size: 16px;
   background: none;
+  font-family: "Montserrat";
+  color: #212121;
 
 }
 .item-cart__сounter{
@@ -2584,7 +2585,7 @@ z-index: 1;
     min-height: 500px;
     padding: 30px;
     justify-content: space-evenly;
-    align-items:center;
+    /* align-items:center; */
   }
   .popup__img {
     -webkit-box-flex: 0;
@@ -2790,7 +2791,7 @@ border-radius:8px;
   .popup__body {
     max-width: 700px;
     min-height: 400px;
-    padding: 20px;
+    padding: 30px;
   }
 
   .popup__img {
@@ -2802,13 +2803,13 @@ border-radius:8px;
 
   .popup__title {
     font-size: 22px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     line-height: 22px;
   }
 
   .popup__price {
-    font-size: 22px;
-    margin-bottom: 8px;
+    font-size: 18px;
+    margin-bottom: 15px;
   }
 
   .popup__articol {
@@ -2828,6 +2829,7 @@ border-radius:8px;
   .popup__btn {
     font-size: 18px;
     padding: 10px 30px;
+    margin-bottom: 15px;
   }
 
   .popup__title-send {
@@ -3079,9 +3081,12 @@ border-radius:8px;
   }
 
   .popup__close {
-    top: 5px;
-    right: 5px;
+    top: 20px;
+    right: 20px;
   }
+.popup__info{
+  text-align: left;
+}
 
   .popup__img {
     margin: 0px auto 0px auto;
@@ -3093,15 +3098,19 @@ border-radius:8px;
   }
 
   .popup__title {
-    margin-bottom: 10px;
-    margin-top: 20px;
+    font-size: 20px;
+    margin-bottom: 15px;
+    margin-top: 15px;
   }
   .popup__descr{
-    margin: 0 auto;
-    margin-bottom: 20px;
+    /* margin: 0 auto; */
+    margin-bottom: 10px;
+    text-align: left;
+    max-width: 100%;
   }
   .popup__price {
-    margin-bottom: 5px;
+    font-size: 16px;
+    margin-bottom: 15px;
   }
 
   .popup__articol {
@@ -3120,6 +3129,7 @@ border-radius:8px;
 
     font-size: 16px;
     padding: 10px 20px;
+    margin-bottom: 15px;
   }
   .popup__body {
     max-width: 400px;
