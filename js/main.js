@@ -201,7 +201,8 @@ function moveElement(destinationContainer,fallbackContainer,element,breakpoint,p
 		}
 	}
 }
-
+moveElement(navList,contactsList,instagramElement,993,true);
+moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
 window.addEventListener('resize', function(){
 	moveElement(navList,contactsList,instagramElement,993,true);
 	moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
@@ -589,6 +590,9 @@ cartContent.addEventListener('touchend', touchEndHandler);
     cartList.addEventListener('click', function (e) {
 
 		let productId = e.target.closest(".cart__item").querySelector('.item-cart__content').getAttribute('id');
+
+		console.log(e.target);
+		console.log(e.currentTarget);
 
 		// Если кликаем на иконку удаления товара
         if (e.target.classList.contains("item-cart__close")) {
