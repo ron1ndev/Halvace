@@ -1129,7 +1129,8 @@ body.ie ._ibg img {
 .popup__info{
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
+  align-items:start;
 }
 .popup__descr{
   /* flex:1 1 100%; */
@@ -1142,7 +1143,10 @@ body.ie ._ibg img {
   color: #c96;
   margin: 0;
 }
-
+.popup__body-send .popup__close{
+  top: 5px;
+  right: 5px;
+}
 .popup__number {
   font-size: 12px;
   line-height: 20px;
@@ -1156,8 +1160,10 @@ body.ie ._ibg img {
   background: #ffffff;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-  padding: 43px 40px;
+  /* padding: 43px 40px; */
+  min-height: 140px;
   margin-bottom: 20px;
+  padding-left: 20px;
 }
 
 .popup__info-send span {
@@ -1169,6 +1175,7 @@ body.ie ._ibg img {
 
 .popup__products {
   margin-bottom: 15px;
+ 
 }
 
 .popup__full-price {
@@ -1255,9 +1262,149 @@ body.ie ._ibg img {
   margin-right: 30px;
   padding-bottom: 5px;
   white-space: nowrap;
+  position: relative;
+
 }
 
-.header__item:hover a {
+.header__submenu{
+  /* border:1px solid black; */
+  min-width: 250px;
+  min-height: 160px;
+  position: absolute;
+  top: 60px;
+  right: 50%;
+  background: rgba(255, 255, 255, 1);
+  transform: translate(50%,0);
+  z-index: 3;
+box-shadow:5px 5px 20px rgb(44, 44, 44);
+  /* display: flex; */
+  align-items:stretch;
+  justify-content: start;
+  color:rgb(0, 0, 0);
+  border: radius 2px;
+  opacity: 0;
+  visibility: hidden;
+  /* position: relative; */
+  z-index: 100;
+  transition: all 0.2s;
+padding: 10px 20px;
+text-align: left;
+
+
+}
+.header__item-dropdown{
+ 
+}
+.header__item-dropdown-active{
+  position: relative;
+  z-index: 10;
+  transition: all 0.2s;
+}
+.header__item-dropdown-active::after{
+  content:'';
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  left: -10px;
+  right: -10px;
+  bottom: -20px;
+  z-index: -1;
+  transition: all 0.2s;
+  /* background-color:red; */
+ 
+}
+.submenu-header{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  padding: 15px 35px;
+  text-align: left;
+  max-width: 200px;
+  
+  
+}
+.header__submenu-active{
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.5s;
+  top: 40px;
+}
+
+
+.submenu-header__desc{
+  font-size: 10px;
+  max-width: 200px;
+}
+.submenu-header__title{
+  font-size: 18px;
+  font-weight: 400;
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+.submenu-header__list{
+  display: flex;
+  flex-direction: column;
+  gap:20px;
+  text-align: left;
+}
+.submenu-header__item{
+  font-size: 18px;
+  position: relative;
+
+}
+.submenu-header__item:nth-child(1):after{
+ 
+content:'';
+display: inline-block;
+width: 20px;
+height: 20px;
+background-image: url('/img/sofa.svg');
+background-position:center center;
+position: absolute;
+background-size:contain;
+top: -2px;
+left: -35px;
+background-repeat:no-repeat;
+}
+.submenu-header__item:nth-child(2):after{
+ 
+
+  content:'';
+display: inline-block;
+width: 20px;
+height: 20px;
+background-image: url('/img/light.svg');
+background-size:contain;
+background-position:center center;
+background-repeat:no-repeat;
+position: absolute;
+top: -3px;
+left: -35px;
+
+
+  }
+  .submenu-header__item:nth-child(3):after{
+ 
+    background-repeat:no-repeat;
+    content:'';
+display: inline-block;
+width: 20px;
+height: 20px;
+background-image: url('/img/flow.svg');
+background-position:center center;
+position: absolute;
+top: -2px;
+left: -35px;
+
+
+    }
+.submenu-header__link{
+  color:rgb(0, 0, 0);
+  display: flex;
+  align-items:center;
+  gap: 0px 5px;
+}
+.header__item:hover a.header__link {
   color: #cc9966;
 }
 
@@ -3060,7 +3207,9 @@ border-radius:8px;
 
 @media (max-width: 767.98px) {
 
-
+.popup__info-send{
+min-height: 100px;
+}
   ._container {
     max-width: none;
     padding: 0 10px;
@@ -3148,7 +3297,7 @@ border-radius:8px;
   }
 
   .popup__number {
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .order__label {
@@ -3419,5 +3568,15 @@ row-gap: 10px;
         padding: 0 50% 90% 50%;
         /* display: none; */
     
+      }
+ 
+}
+
+@media (max-width: 375px) {
+
+      .popup__top{
+        flex-direction: column;
+        align-items:start;
+        gap:10px 0;
       }
 }

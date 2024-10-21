@@ -140,6 +140,66 @@ let unlock = true;
 	});
 
 
+
+
+   const catalogShop = document.querySelector('.header__item-dropdown');
+   const submenu = document.querySelector('.header__submenu');
+
+
+
+   catalogShop.addEventListener('mousemove',(e)=>{
+	
+	
+		if(e.currentTarget.classList.contains('header__item-dropdown')){
+			catalogShop.classList.add('header__item-dropdown-active');
+			submenu.classList.add('header__submenu-active');
+		}
+			
+
+	
+})
+
+
+
+   catalogShop.addEventListener('mouseout',()=>{
+
+	submenu.classList.remove('header__submenu-active');
+	catalogShop.classList.remove('header__item-dropdown-active');
+	
+   })
+
+
+   const acrostic = [
+	'Ангел лёг у края небосклона.',
+	'Наклонившись, удивлялся безднам.',
+	'Новый мир был синим и беззвездным.',
+	'Ад молчал, не слышалось ни стона.',
+	' ',
+	'Алой крови робкое биенье,',
+	'Хрупких рук испуг и содроганье.',
+	'Миру лав досталось в обладанье',
+	'Ангела святое отраженье.',
+	'Тесно в мире! Пусть живёт, мечтая',
+	'О любви, о грусти и о тени,',
+	'В сумраке предвечном открывая',
+	'Азбуку своих же откровений.'
+  ];
+  
+  let annaAkhmatova = ''; // Объявляем переменную, в которой будет собрана итоговая строка
+  
+  for (let i = 0; i < acrostic.length; i += 1) {
+	annaAkhmatova += acrostic[i][0]
+  }
+  console.log(annaAkhmatova);
+  
+  
+
+
+
+
+
+
+
     // Бургер-меню
     let headerMburger = document.querySelector(".header__burger"),
         headerMenu = document.querySelector(".header__menu"),
