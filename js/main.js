@@ -169,28 +169,7 @@ let unlock = true;
    })
 
 
-   const acrostic = [
-	'Ангел лёг у края небосклона.',
-	'Наклонившись, удивлялся безднам.',
-	'Новый мир был синим и беззвездным.',
-	'Ад молчал, не слышалось ни стона.',
-	' ',
-	'Алой крови робкое биенье,',
-	'Хрупких рук испуг и содроганье.',
-	'Миру лав досталось в обладанье',
-	'Ангела святое отраженье.',
-	'Тесно в мире! Пусть живёт, мечтая',
-	'О любви, о грусти и о тени,',
-	'В сумраке предвечном открывая',
-	'Азбуку своих же откровений.'
-  ];
-  
-  let annaAkhmatova = ''; // Объявляем переменную, в которой будет собрана итоговая строка
-  
-  for (let i = 0; i < acrostic.length; i += 1) {
-	annaAkhmatova += acrostic[i][0]
-  }
-  console.log(annaAkhmatova);
+ 
   
   
 
@@ -261,11 +240,11 @@ function moveElement(destinationContainer,fallbackContainer,element,breakpoint,p
 		}
 	}
 }
-moveElement(navList,contactsList,instagramElement,993,true);
-moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
+// moveElement(navList,contactsList,instagramElement,993,true);
+// moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
 window.addEventListener('resize', function(){
-	moveElement(navList,contactsList,instagramElement,993,true);
-	moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
+	// moveElement(navList,contactsList,instagramElement,993,true);
+	// moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
 });
 
 
