@@ -567,8 +567,11 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		// Удаляем текущий продукт со страницы и обновляем количество продуктов на странице
         deletProd.remove(); // Удалаяем html продукт из корзины
   
+		if(window.location.pathname === '/index.html' || window.location.pathname === '/decor.html' || window.location.pathname === '/Furniture.html' || window.location.pathname === '/Lighting.html'){
         // Вызываем функцию для синхронизации продуктов к корзине и на странице
 		synchronizeButton(id);
+		}
+
 
         // Вычитаем из суммы удаленный продукт и печатаем новую сумму и обновляем Storage
 		updateToStorage();
@@ -589,9 +592,8 @@ cartContent.addEventListener('touchend', touchEndHandler);
     // Получуение данных о продукте
 	function getProductData(target) {
         // Текуща цена продукта
-		let currentPrice = parseInt(priceWithoutSpaces(target.closest('.item-cart__content2').querySelector('.item-cart__prise').textContent));
-		let currentDataPrice = parseInt(priceWithoutSpaces(target.closest('.item-cart__content2').querySelector('.item-cart__prise').dataset.price))
-		console.log(currentDataPrice)
+		let currentPrice = parseInt(priceWithoutSpaces(target.closest('.item-cart__content2').querySelector('.item-cart__prise').dataset.price))
+
 		// Текущее количество продукта
 		let currentCount = target.closest('.item-cart__content2').querySelector('.сounter__count');
 
@@ -632,8 +634,6 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
 		let productId = e.target.closest(".cart__item").querySelector('.item-cart__content').getAttribute('id');
 
-		console.log(e.target);
-		console.log(e.currentTarget);
 
 		// Если кликаем на иконку удаления товара
         if (e.target.classList.contains("item-cart__close")) {
@@ -654,20 +654,27 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			printQuan();
 			printFullPrice();
 			updateToStorage();
+
         }
 		// Функционал клика плюс товара
 		if(e.target.classList.contains('сounter__plus')){
+              let productItemPrice = e.target.closest('.item-cart__content2').querySelector('.item-cart__prise');
 
+			  
 			// Получаем данные о продукте
 			let {currentPrice, currentCount} = getProductData(e.target);
 
             // Увеличиваем количество и цену продукта
 			updateProduct(productId,1,currentPrice,currentCount);
-			
 
+			productItemPrice.textContent = `${productPrice[productId]}₽`
+
+			
 		}
 		// Функционал клика на минус товара
 		if(e.target.classList.contains('сounter__minus')){
+
+			let productItemPrice = e.target.closest('.item-cart__content2').querySelector('.item-cart__prise');
 
 			// Получаем данные о продукте
 			let {currentPrice, currentCount} = getProductData(e.target);
@@ -676,6 +683,8 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
 				// Уменьшаем количество и цену продукта
 				updateProduct(productId,-1,currentPrice,currentCount);
+
+				productItemPrice.textContent = `${productPrice[productId]}₽`
 
 			}
 		}
@@ -764,6 +773,19 @@ cartContent.addEventListener('touchend', touchEndHandler);
 				let quantityElement = document.getElementById(id).querySelector('.сounter__count');
 				if(quantityElement){
 					quantityElement.textContent = productСount[id]; // Устанавливаем текущее значение каждого отдельного счетчика у продукта
+				}
+			 }))
+		}
+
+		if (localStorage.getItem('productPrice') !== null) {
+			// Получаем данные о добавленном продукте
+			productPrice = JSON.parse(localStorage.getItem('productPrice'));
+			// Вытаскиваем все айди продуктов
+             Object.keys(productPrice).forEach((id=>{
+				// Находим счетчик каждого отдельного проудкта по айди
+				let priceElement = document.getElementById(id).querySelector('.item-cart__prise');
+				if(priceElement){
+					priceElement.textContent = `${productPrice[id]}₽`; // Устанавливаем текущее значение каждого отдельного счетчика у продукта
 				}
 			 }))
 		}
