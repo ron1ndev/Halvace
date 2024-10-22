@@ -479,7 +479,7 @@ cartContent.addEventListener('touchend', touchEndHandler);
         <img class="item-cart__img" src="${img}" alt="">
         <div class="item-cart__content2">
             <div class="item-cart__title">${title}</div>
-            <div class="item-cart__prise">${price}</div>
+            <div class="item-cart__prise" data-price="${price}">${price}</div>
             <div class="item-cart__сounter">
 				<div class="сounter__plus">+</div>
 				<div class="сounter__count">1</div>
@@ -590,6 +590,8 @@ cartContent.addEventListener('touchend', touchEndHandler);
 	function getProductData(target) {
         // Текуща цена продукта
 		let currentPrice = parseInt(priceWithoutSpaces(target.closest('.item-cart__content2').querySelector('.item-cart__prise').textContent));
+		let currentDataPrice = parseInt(priceWithoutSpaces(target.closest('.item-cart__content2').querySelector('.item-cart__prise').dataset.price))
+		console.log(currentDataPrice)
 		// Текущее количество продукта
 		let currentCount = target.closest('.item-cart__content2').querySelector('.сounter__count');
 
@@ -766,6 +768,7 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			 }))
 		}
 
+		if(window.location.pathname === '/index.html' || window.location.pathname === '/decor.html' || window.location.pathname === '/Furniture.html' || window.location.pathname === '/Lighting.html'){
         // Проходим по всем кнопкам с атрибуами айди, которые есть в локальнос хранилише и сихнронизуем их с товарами из корзины, добавлем стиль по поведению
 		idProduts.forEach((item=>{
 			let button = document.querySelector(`.popup__body[data-id='${item.id}']`).querySelector('button');
@@ -774,9 +777,12 @@ cartContent.addEventListener('touchend', touchEndHandler);
             button.classList.remove('hover');
             button.classList.add('ShopСart');
 		}))
+		}
+
     };
 	// Иницилизуем данные из локал
     initialStore();
+	
 
     // Функция для обнолвения даннхы по количестве и цены
 	function updateProductData (productData,productLocal) {
