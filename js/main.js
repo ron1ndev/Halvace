@@ -887,7 +887,8 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
 if(window.location.pathname === '/Furniture.html'){
 	const furnitureList = document.querySelector('.category__row');
-
+	const btn = document.querySelector('.category__btn');
+	let visible = 4;
 	const data = [
 		   {
 			"name":"Диван",
@@ -916,20 +917,51 @@ if(window.location.pathname === '/Furniture.html'){
 			"img":"img/Furniture/4.jpg",
 			"id":'3',
 			"decr":"Комфортное кресло с высокой спинкой и мягкими подлокотниками, обитое качественной эко-кожей. Эргономичная форма позволяет удобно сидеть долгое время, а поворотный механизм и деревянные ножки придают современный акцент."
-		   }
+		   },
+		   {
+			"name":"Диван",
+			"price":"30 200",
+			"img":"img/Furniture/1.jpg",
+			"id":'4',
+			"decr":"Элегантный трехместный диван с мягкой обивкой из велюра, выполненный в современном минималистичном стиле. Широкие подлокотники и глубокие сиденья обеспечивают комфортный отдых, а металлические ножки придают легкость конструкции."
+		   },
+		   {
+			"name":"Диван",
+			"price":"19 800",
+			"img":"img/Furniture/2.jpg",
+			"id":'5',
+			"decr":"Угловой диван с просторными секциями, обитый прочной тканью. Механизм раскладывания превращает его в полноценное спальное место, идеально подходящее для небольшой квартиры. Мягкие подушки спинки создают уютную атмосферу."
+		   },
+		   {
+			"name":"Диван",
+			"price":"27 100",
+			"img":"img/Furniture/3.jpg",
+			"id":'6',
+			"decr":"Компактный двухместный диван с лаконичным дизайном и износостойкой тканевой обивкой. Идеально впишется в небольшие пространства, добавляя стиль и функциональность в интерьер."
+		   },       
+		   {
+			"name":"Кресло",
+			"price":"13 990",
+			"img":"img/Furniture/4.jpg",
+			"id":'7',
+			"decr":"Комфортное кресло с высокой спинкой и мягкими подлокотниками, обитое качественной эко-кожей. Эргономичная форма позволяет удобно сидеть долгое время, а поворотный механизм и деревянные ножки придают современный акцент."
+		   },
+		   
+		   
 	];
 	
 	
 	function createCardProduct (){
 	
-	 data.map((item,el)=>{
-		   let {name,price,img} = item;
+	let newData = data.slice(visible - 4,visible)
+	newData.map((item,el)=>{
+		   let {name,price,img,id} = item;
 	
 		   let product = document.createElement('li');
 		   product.classList.add('category__column');
 		   product.innerHTML = `
 		   <div class="category__item">
-		   <a class="_popup-link" href="#new-prodectN${el+1}">
+		   <a class="_popup-link" href="#new-prodectN${id}">
 			   <div class="category__img _ibg">
 				   <img src=${img} alt=${name}>
 			   </div>
@@ -941,7 +973,6 @@ if(window.location.pathname === '/Furniture.html'){
 	   
 		   furnitureList.append(product)
 		})
-	
 	}
 	
 	const popupContent = document.querySelector('.popupContent');
@@ -954,7 +985,7 @@ if(window.location.pathname === '/Furniture.html'){
 			let {name,price,img, decr, id} = item;
 	
 			let product  = document.createElement('div');
-			product.classList.add('popup', `popup_new-prodectN${el+1}`)
+			product.classList.add('popup', `popup_new-prodectN${id}`)
 			product.innerHTML = `
 			<div class="popup__content">
 			<div class="popup__body" data-id=${id}>
@@ -984,7 +1015,32 @@ if(window.location.pathname === '/Furniture.html'){
 	 }
 	createCardProduct()
 	createPopupProduct()
-}
+
+
+    function lazyLoading(){
+
+		btn.disabled = true;
+
+		
+
+			visible += 4;
+			createPopupProduct()
+
+			createCardProduct()
+			
+			btn.disabled = false;
+
+			if(data.length === visible){
+				btn.style.display = 'none';
+			}
+				
+		
+		
+	}
+
+	btn.addEventListener('click',lazyLoading)
+
+	}
 
 
 
