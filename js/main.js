@@ -500,7 +500,7 @@ cartContent.addEventListener('touchend', touchEndHandler);
     for (let item of btns) {
 
 		// Установка атрибуа data-id попапа с продуктов и выдача ему айди
-        item.closest(".popup__body").setAttribute("data-id", randomId++);
+        // item.closest(".popup__body").setAttribute("data-id", randomId++);
 
         item.addEventListener("click", function (e) {
 			e.preventDefault();
@@ -578,6 +578,8 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
        // Функция для синхронизации продуктов к корзине и на странице
 		function synchronizeButton(id) {
+
+			if(document.querySelector(`.popup__body[data-id="${id}"]`)!==null){
 			// Ищем кнопку товара по его data-id
 			let productButton = document.querySelector(`.popup__body[data-id="${id}"]`).querySelector('button');
 		
@@ -586,6 +588,8 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			productButton.querySelector('.btn__text').textContent = 'Добавить в корзину';
 			productButton.classList.add('hover');
 			productButton.classList.remove('ShopСart');
+			}
+
 		};
 
     };
@@ -790,16 +794,21 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			 }))
 		}
 
-		if(window.location.pathname === '/index.html' || window.location.pathname === '/decor.html' || window.location.pathname === '/Furniture.html' || window.location.pathname === '/Lighting.html'){
+		// if(window.location.pathname === '/index.html' || window.location.pathname === '/decor.html' || window.location.pathname === '/Furniture.html' || window.location.pathname === '/Lighting.html'){
         // Проходим по всем кнопкам с атрибуами айди, которые есть в локальнос хранилише и сихнронизуем их с товарами из корзины, добавлем стиль по поведению
 		idProduts.forEach((item=>{
-			let button = document.querySelector(`.popup__body[data-id='${item.id}']`).querySelector('button');
-			button.setAttribute('data-isbuy', 'true');
-            button.querySelector('.btn__text').textContent = 'В корзине';
-            button.classList.remove('hover');
-            button.classList.add('ShopСart');
+			if(document.querySelector(`.popup__body[data-id='${item.id}']`)!==null){
+				if(document.querySelector(`.popup__body[data-id='${item.id}']`).querySelector('button')){
+					let button = document.querySelector(`.popup__body[data-id='${item.id}']`).querySelector('button');
+					button.setAttribute('data-isbuy', 'true');
+					button.querySelector('.btn__text').textContent = 'В корзине';
+					button.classList.remove('hover');
+					button.classList.add('ShopСart');
+				}
+			}
+		
 		}))
-		}
+		// }
 
     };
 	// Иницилизуем данные из локал
@@ -874,6 +883,108 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
 });
 
+
+
+if(window.location.pathname === '/Furniture.html'){
+	const furnitureList = document.querySelector('.category__row');
+
+	const data = [
+		   {
+			"name":"Диван",
+			"price":"30 200",
+			"img":"img/Furniture/1.jpg",
+			"id":'0',
+			"decr":"Элегантный трехместный диван с мягкой обивкой из велюра, выполненный в современном минималистичном стиле. Широкие подлокотники и глубокие сиденья обеспечивают комфортный отдых, а металлические ножки придают легкость конструкции."
+		   },
+		   {
+			"name":"Диван",
+			"price":"19 800",
+			"img":"img/Furniture/2.jpg",
+			"id":'1',
+			"decr":"Угловой диван с просторными секциями, обитый прочной тканью. Механизм раскладывания превращает его в полноценное спальное место, идеально подходящее для небольшой квартиры. Мягкие подушки спинки создают уютную атмосферу."
+		   },
+		   {
+			"name":"Диван",
+			"price":"27 100",
+			"img":"img/Furniture/3.jpg",
+			"id":'2',
+			"decr":"Компактный двухместный диван с лаконичным дизайном и износостойкой тканевой обивкой. Идеально впишется в небольшие пространства, добавляя стиль и функциональность в интерьер."
+		   },       
+		   {
+			"name":"Кресло",
+			"price":"13 990",
+			"img":"img/Furniture/4.jpg",
+			"id":'3',
+			"decr":"Комфортное кресло с высокой спинкой и мягкими подлокотниками, обитое качественной эко-кожей. Эргономичная форма позволяет удобно сидеть долгое время, а поворотный механизм и деревянные ножки придают современный акцент."
+		   }
+	];
+	
+	
+	function createCardProduct (){
+	
+	 data.map((item,el)=>{
+		   let {name,price,img} = item;
+	
+		   let product = document.createElement('li');
+		   product.classList.add('category__column');
+		   product.innerHTML = `
+		   <div class="category__item">
+		   <a class="_popup-link" href="#new-prodectN${el+1}">
+			   <div class="category__img _ibg">
+				   <img src=${img} alt=${name}>
+			   </div>
+		   </a>
+		   <div class="category__item-title">${name}</div>
+		   <div class="category__item-price">${price}₽</div>
+	   </div>
+		   `
+	   
+		   furnitureList.append(product)
+		})
+	
+	}
+	
+	const popupContent = document.querySelector('.popupContent');
+	
+	
+	
+	function createPopupProduct (){
+		data.map((item,el)=>{
+	
+			let {name,price,img, decr, id} = item;
+	
+			let product  = document.createElement('div');
+			product.classList.add('popup', `popup_new-prodectN${el+1}`)
+			product.innerHTML = `
+			<div class="popup__content">
+			<div class="popup__body" data-id=${id}>
+				<div class="popup__img _ibg"><img class="popup__img-img" src=${img} alt=${name}></div>
+				<div class="popup__info">
+				<div class="popup__title">${name}</div>
+				<div class="popup__price">${price}₽</div>
+				<button class="popup__btn hover" data-isBuy="false">
+					<div class="btn__text">Добавить в корзину</div>
+					<div class="loading">
+						<div class="loading_content">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+						</div>
+					</div>
+				</button>
+				<div class="popup__descr">${decr}</div>
+			</div>
+				<div class="popup__close"><span></span></div>
+			</div>
+		</div>
+		})
+	
+		`
+		popupContent.append(product)
+		
+	})
+	 }
+	createCardProduct()
+	createPopupProduct()
+}
 
 
 
