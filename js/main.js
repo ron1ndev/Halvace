@@ -1,6 +1,14 @@
 "use strict";
 document.addEventListener('DOMContentLoaded', function () {
 
+
+
+
+
+
+
+
+
 let unlock = true;
 
 	// Функционал открытия попапов на странице, блокировка контента при октрытии попапа
@@ -395,7 +403,8 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		
         // Функция для нажатия кнопки продукта для покладки в корзину
 		const clickOnBtnProduct = (e) => {
-			let currentTarget = e.currentTarget;
+		
+			let currentTarget = e.target.closest('.popup__btn');
 			e.preventDefault();
 
 			// Если начальное состояние кнопки "Добавить в корзину"  - отвечает артрибут data-isBuy - false
@@ -413,7 +422,7 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			}else{
 				cartContent.classList.add("active");
 				cartBar.classList.add("active");
-				popup_close();
+				popup_close(currentTarget.closest('.popup'));
 				mainBlock.classList.remove("main-block-padding");
 				header.classList.remove("header-fixed-active");
 				cartContent.classList.remove("cart-top");
@@ -423,9 +432,19 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			
 		}
         // Проходимся по всем кнопкам и назначаем события клика
-		btnPopupBuy.forEach(item => {
-			item.addEventListener('click',clickOnBtnProduct);
-		});
+
+		document.addEventListener('click',(e)=>{
+		let target = e.target;
+
+		if(target.closest('.popup__btn')){
+			console.log(target.closest('.popup__btn'))
+			clickOnBtnProduct(e)
+		}
+		
+		})
+		// btnPopupBuy.forEach(item => {
+		// 	item.addEventListener('click',clickOnBtnProduct);
+		// });
 
 
     //===================================================
@@ -497,67 +516,134 @@ cartContent.addEventListener('touchend', touchEndHandler);
 	let idProduts = JSON.parse(localStorage.getItem('productID')) || [];
 
     // Цикл при котором вызываются функции для расчете цены и количества товара в корзине
-    for (let item of btns) {
 
-		// Установка атрибуа data-id попапа с продуктов и выдача ему айди
-        // item.closest(".popup__body").setAttribute("data-id", randomId++);
 
-        item.addEventListener("click", function (e) {
-			e.preventDefault();
+	document.addEventListener('click',(e)=>{
+		let target = e.target;
+
+		if(target.closest('.popup__btn')){
 			
-			// Событие при условии, что текущей кнопки атрибут data-isbuy = false (Значит, что на кнопку еще не нажимали)
-			if(e.currentTarget.getAttribute('data-isbuy')=='false'){
+			let item = target.closest('.popup__btn');
 
-				// Получаем данные из текущего продукта при клике на добавление в корзину
-				let parent = e.currentTarget.closest(".popup__body");
-				let id = parent.dataset.id;
-				let img = parent.querySelector(".popup__img-img").getAttribute("src");
-				let title = parent.querySelector(".popup__title").textContent;
-				let priceString = parent.querySelector(".popup__price").textContent;
-				let priceNumber = parseInt(priceWithoutSpaces(parent.querySelector(".popup__price").textContent));
-
-	            // Генерируемый полученный продукт и добавляем его в панель корзины
-				cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
-
-                // Проверяем, что повторно не добавлен один и тот же продукт
-				if(!idProduts.some((item=>item.id===id))){
-					idProduts.push({id:id});
-				}
-				// Обновляем Storage, расчитываем сумму и выводим сумму и количество товаров на страницу
-				updateToStorage();
-
-                // Устаналиваем начальное значение продукта при добавлении в корзину
-                function setInitialValue (productData, id, initValue, productLocal){
-					// Если товара нет в объекте, добавялем с начальным значение
-					if (!productData[id]) {
-						productData[id] = initValue; 
-						localStorage.setItem(productLocal,JSON.stringify(productData));
-					}
-				};
-				setInitialValue(productСount, id, 1, 'productСount'); // Начальное количество 1
-				setInitialValue(productPrice, id, priceNumber, 'productPrice'); // Начальное цена продукта
-
-                itemQuan = 0;
-                // Собираем количество значений
-				Object.values(productСount).map((item=>{
-					return itemQuan += item;
-				}));
-
-                // Устаналиваем общее количество продуктов и сохраняем в локал
-				totalCount = itemQuan;
-				localStorage.setItem('produtcAllCount',totalCount);
-	            
-				printQuan(); // Печатаем количество продуктов
-
-				// Устаналиваем общий прайс продуктов и сохраняем в локал
-				totalPrice += priceNumber;
-				localStorage.setItem('productAllprice',totalPrice);
+				e.preventDefault();
 				
-				printFullPrice(); // Печатаем цену продуктов
+				// Событие при условии, что текущей кнопки атрибут data-isbuy = false (Значит, что на кнопку еще не нажимали)
+				if(item.getAttribute('data-isbuy')=='false'){
+		             
+					// Получаем данные из текущего продукта при клике на добавление в корзину
+					let parent = item.closest(".popup__body");
+					let id = parent.dataset.id;
+					let img = parent.querySelector(".popup__img-img").getAttribute("src");
+					let title = parent.querySelector(".popup__title").textContent;
+					let priceString = parent.querySelector(".popup__price").textContent;
+					let priceNumber = parseInt(priceWithoutSpaces(parent.querySelector(".popup__price").textContent));
+	
+					// Генерируемый полученный продукт и добавляем его в панель корзины
+					cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
+	
+					// Проверяем, что повторно не добавлен один и тот же продукт
+					if(!idProduts.some((item=>item.id===id))){
+						idProduts.push({id:id});
+					}
+					// Обновляем Storage, расчитываем сумму и выводим сумму и количество товаров на страницу
+					updateToStorage();
+	
+					// Устаналиваем начальное значение продукта при добавлении в корзину
+					function setInitialValue (productData, id, initValue, productLocal){
+						// Если товара нет в объекте, добавялем с начальным значение
+						if (!productData[id]) {
+							productData[id] = initValue; 
+							localStorage.setItem(productLocal,JSON.stringify(productData));
+						}
+					};
+					setInitialValue(productСount, id, 1, 'productСount'); // Начальное количество 1
+					setInitialValue(productPrice, id, priceNumber, 'productPrice'); // Начальное цена продукта
+	
+					itemQuan = 0;
+					// Собираем количество значений
+					Object.values(productСount).map((item=>{
+						return itemQuan += item;
+					}));
+	
+					// Устаналиваем общее количество продуктов и сохраняем в локал
+					totalCount = itemQuan;
+					localStorage.setItem('produtcAllCount',totalCount);
+					
+					printQuan(); // Печатаем количество продуктов
+	
+					// Устаналиваем общий прайс продуктов и сохраняем в локал
+					totalPrice += priceNumber;
+					localStorage.setItem('productAllprice',totalPrice);
+					
+					printFullPrice(); // Печатаем цену продуктов
+	
+				}
+		}
+		
+	})
 
-			}
-        })
-    };
+
+    // for (let item of btns) {
+
+	// 	// Установка атрибуа data-id попапа с продуктов и выдача ему айди
+    //     // item.closest(".popup__body").setAttribute("data-id", randomId++);
+
+    //     item.addEventListener("click", function (e) {
+	// 		e.preventDefault();
+			
+	// 		// Событие при условии, что текущей кнопки атрибут data-isbuy = false (Значит, что на кнопку еще не нажимали)
+	// 		if(e.currentTarget.getAttribute('data-isbuy')=='false'){
+
+	// 			// Получаем данные из текущего продукта при клике на добавление в корзину
+	// 			let parent = e.currentTarget.closest(".popup__body");
+	// 			let id = parent.dataset.id;
+	// 			let img = parent.querySelector(".popup__img-img").getAttribute("src");
+	// 			let title = parent.querySelector(".popup__title").textContent;
+	// 			let priceString = parent.querySelector(".popup__price").textContent;
+	// 			let priceNumber = parseInt(priceWithoutSpaces(parent.querySelector(".popup__price").textContent));
+
+	//             // Генерируемый полученный продукт и добавляем его в панель корзины
+	// 			cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
+
+    //             // Проверяем, что повторно не добавлен один и тот же продукт
+	// 			if(!idProduts.some((item=>item.id===id))){
+	// 				idProduts.push({id:id});
+	// 			}
+	// 			// Обновляем Storage, расчитываем сумму и выводим сумму и количество товаров на страницу
+	// 			updateToStorage();
+
+    //             // Устаналиваем начальное значение продукта при добавлении в корзину
+    //             function setInitialValue (productData, id, initValue, productLocal){
+	// 				// Если товара нет в объекте, добавялем с начальным значение
+	// 				if (!productData[id]) {
+	// 					productData[id] = initValue; 
+	// 					localStorage.setItem(productLocal,JSON.stringify(productData));
+	// 				}
+	// 			};
+	// 			setInitialValue(productСount, id, 1, 'productСount'); // Начальное количество 1
+	// 			setInitialValue(productPrice, id, priceNumber, 'productPrice'); // Начальное цена продукта
+
+    //             itemQuan = 0;
+    //             // Собираем количество значений
+	// 			Object.values(productСount).map((item=>{
+	// 				return itemQuan += item;
+	// 			}));
+
+    //             // Устаналиваем общее количество продуктов и сохраняем в локал
+	// 			totalCount = itemQuan;
+	// 			localStorage.setItem('produtcAllCount',totalCount);
+	            
+	// 			printQuan(); // Печатаем количество продуктов
+
+	// 			// Устаналиваем общий прайс продуктов и сохраняем в локал
+	// 			totalPrice += priceNumber;
+	// 			localStorage.setItem('productAllprice',totalPrice);
+				
+	// 			printFullPrice(); // Печатаем цену продуктов
+
+	// 		}
+    //     })
+    // };
 
     //  Перерасчет цены при удалении товара из корзины
     const deleteProduct = function (deletProd) {
@@ -811,8 +897,7 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		// }
 
     };
-	// Иницилизуем данные из локал
-    initialStore();
+
 	
 
     // Функция для обнолвения даннхы по количестве и цены
@@ -858,12 +943,15 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		totalPrice = 0; // Очитка общего прайса продуктов в корзине
 		itemQuan = 0; // Сброс промежуточного количества
 		itemPrice = 0; // Сброс промежуточного прайса
+		
+		
 	}
 
     // Функция для сброса кнопок до начального состояния
 	function resetButtons () {
 				// Проходим по всем кнопкам продуктов и сбрасываем их до начального состояния
-				btns.forEach((item=>{
+			const btns = document.querySelectorAll('.popup__btn');
+			btns.forEach((item=>{
 					// Устаналиваем атрибут в начальное состояние
 					item.setAttribute('data-isBuy','false');
 		
@@ -876,231 +964,241 @@ cartContent.addEventListener('touchend', touchEndHandler);
     
 	// Событие нажатие на кнопку "Очистить корзину"
 	clearCartBtn.addEventListener('click',()=>{
+
 		clearCart(); // Очитка корзины
 		resetButtons(); // Сбос кнопок
 		localStorage.clear(); // Очитска localStorage
 	});
-
-
-
-
-
-
-
-
-
-
-
-});
-
-if(window.location.pathname === '/Furniture.html'){
-	const furnitureList = document.querySelector('.category__row');
-	const btn = document.querySelector('.category__btn');
-	let visible = 4;
-	const data = [
-		   {
-			"name":"Диван",
-			"price":"30 200",
-			"img":"img/Furniture/1.jpg",
-			"id":'0',
-			"decr":"Элегантный трехместный диван с мягкой обивкой из велюра, выполненный в современном минималистичном стиле. Широкие подлокотники и глубокие сиденья обеспечивают комфортный отдых, а металлические ножки придают легкость конструкции."
-		   },
-		   {
-			"name":"Диван",
-			"price":"19 800",
-			"img":"img/Furniture/2.jpg",
-			"id":'1',
-			"decr":"Угловой диван с просторными секциями, обитый прочной тканью. Механизм раскладывания превращает его в полноценное спальное место, идеально подходящее для небольшой квартиры. Мягкие подушки спинки создают уютную атмосферу."
-		   },
-		   {
-			"name":"Диван",
-			"price":"27 100",
-			"img":"img/Furniture/3.jpg",
-			"id":'2',
-			"decr":"Компактный двухместный диван с лаконичным дизайном и износостойкой тканевой обивкой. Идеально впишется в небольшие пространства, добавляя стиль и функциональность в интерьер."
-		   },       
-		   {
-			"name":"Кресло",
-			"price":"13 990",
-			"img":"img/Furniture/4.jpg",
-			"id":'3',
-			"decr":"Комфортное кресло с высокой спинкой и мягкими подлокотниками, обитое качественной эко-кожей. Эргономичная форма позволяет удобно сидеть долгое время, а поворотный механизм и деревянные ножки придают современный акцент."
-		   },
-		   {
-			"name":"Диван",
-			"price":"30 200",
-			"img":"img/Furniture/1.jpg",
-			"id":'4',
-			"decr":"Элегантный трехместный диван с мягкой обивкой из велюра, выполненный в современном минималистичном стиле. Широкие подлокотники и глубокие сиденья обеспечивают комфортный отдых, а металлические ножки придают легкость конструкции."
-		   },
-		   {
-			"name":"Диван",
-			"price":"19 800",
-			"img":"img/Furniture/2.jpg",
-			"id":'5',
-			"decr":"Угловой диван с просторными секциями, обитый прочной тканью. Механизм раскладывания превращает его в полноценное спальное место, идеально подходящее для небольшой квартиры. Мягкие подушки спинки создают уютную атмосферу."
-		   },
-		   {
-			"name":"Диван",
-			"price":"27 100",
-			"img":"img/Furniture/3.jpg",
-			"id":'6',
-			"decr":"Компактный двухместный диван с лаконичным дизайном и износостойкой тканевой обивкой. Идеально впишется в небольшие пространства, добавляя стиль и функциональность в интерьер."
-		   },       
-		   {
-			"name":"Кресло",
-			"price":"13 990",
-			"img":"img/Furniture/4.jpg",
-			"id":'7',
-			"decr":"Комфортное кресло с высокой спинкой и мягкими подлокотниками, обитое качественной эко-кожей. Эргономичная форма позволяет удобно сидеть долгое время, а поворотный механизм и деревянные ножки придают современный акцент."
-		   },
-		   
-		   
-	];
 	
-	
-	function createCardProduct (){
-	
-	let newData = data.slice(visible - 4,visible)
-	newData.map((item,el)=>{
-		   let {name,price,img,id} = item;
-	
-		   let product = document.createElement('li');
-		   product.classList.add('category__column');
-		   product.innerHTML = `
-		   <div class="category__item">
-		   <a class="_popup-link" href="#new-prodectN${id}">
-			   <div class="category__img _ibg">
-				   <img src=${img} alt=${name}>
-			   </div>
-		   </a>
-		   <div class="category__item-title">${name}</div>
-		   <div class="category__item-price">${price}₽</div>
-	   </div>
-		   `
-	   
-		   furnitureList.append(product)
-		})
-	}
-	
-	const popupContent = document.querySelector('.popupContent');
-	
-	
-	
-	function createPopupProduct (){
-		let newData = data.slice(visible - 4,visible)
-		newData.map((item,el)=>{
-	
-			let {name,price,img, decr, id} = item;
-	
-			let product  = document.createElement('div');
-			product.classList.add('popup', `popup_new-prodectN${id}`)
-			product.innerHTML = `
-			<div class="popup__content">
-			<div class="popup__body" data-id=${id} id="new-prodectN${id}">
-				<div class="popup__img _ibg"><img class="popup__img-img" src=${img} alt=${name}></div>
-				<div class="popup__info">
-				<div class="popup__title">${name}</div>
-				<div class="popup__price">${price}₽</div>
-				<button class="popup__btn hover" data-isBuy="false">
-					<div class="btn__text">Добавить в корзину</div>
-					<div class="loading">
-						<div class="loading_content">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-						</div>
-					</div>
-				</button>
-				<div class="popup__descr">${decr}</div>
-			</div>
-				<div class="popup__close"><span></span></div>
-			</div>
-		</div>
-		})
-	
-		`
-		popupContent.append(product)
-		
-	})
-	 }
-	createCardProduct()
-	createPopupProduct()
 
 
 
-   // Функция для делегирования событий
-   function addEventPopup() {
-	furnitureList.addEventListener('click', (e) => {
-		let target = e.target;
+    // Блок с динамическим выводом товаров
+	if(window.location.pathname === '/Furniture.html'){
+        // Переменные
+		const furnitureList = document.querySelector('.category__row');
+		const popupContent = document.querySelector('.popupContent');
+		const btn = document.querySelector('.category__btn');
+		let visible = 4;
 
-		if (target.closest('a._popup-link')) {
-			e.preventDefault();
-			let el = target.closest('a._popup-link');
-			let itemId = el.getAttribute('href').replace("#",'');
-
-			let popup = document.querySelector(`.popup_${itemId}`)
-			popup.classList.add('_active')
-			console.log(popup)
 		
 
+
+		function loadSavedData() {
+			let savedVisible = localStorage.getItem('visible');
+			if (savedVisible) {
+				visible = parseInt(savedVisible, 10);
+			}else{
+				visible = 4;
+			}
 		}
-	});
-}
 
-document.addEventListener('click', (e) => {
-	let target = e.target;
-	
-	// Закрытие при клике на фон попапа или кнопку "закрыть"
-	if (target.closest('.popup__close') || target.classList.contains('_active')) {
-		
-		let activePopup = document.querySelector('.popup._active');
-		if (activePopup) {
-			activePopup.classList.remove('_active');
+		function setVisibleState(){
+			localStorage.setItem('visible',visible)
 		}
-	}
 
-	
-});
-
-document.addEventListener('keydown', function (e) {
-	if (e.code === 'Escape') {
-
-		
-		let activePopup = document.querySelector('.popup._active');
-		if (activePopup) {
-			activePopup.classList.remove('_active');
-		}
-	
-	}
-});
-
-
-
-
-
-	function lazyLoading(){
-
-		btn.disabled = true;
-
-		
-
-			visible += 4;
-			createPopupProduct()
-
-			createCardProduct()
+		// Данные
+		const data = [
+			{
+			 "name":"Диван",
+			 "price":"30 200",
+			 "img":"img/Furniture/1.jpg",
+			 "id":'0',
+			 "decr":"Элегантный трехместный диван с мягкой обивкой из велюра, выполненный в современном минималистичном стиле. Широкие подлокотники и глубокие сиденья обеспечивают комфортный отдых, а металлические ножки придают легкость конструкции."
+			},
+			{
+			 "name":"Диван",
+			 "price":"19 800",
+			 "img":"img/Furniture/2.jpg",
+			 "id":'1',
+			 "decr":"Угловой диван с просторными секциями, обитый прочной тканью. Механизм раскладывания превращает его в полноценное спальное место, идеально подходящее для небольшой квартиры. Мягкие подушки спинки создают уютную атмосферу."
+			},
+			{
+			 "name":"Диван",
+			 "price":"27 100",
+			 "img":"img/Furniture/3.jpg",
+			 "id":'2',
+			 "decr":"Компактный двухместный диван с лаконичным дизайном и износостойкой тканевой обивкой. Идеально впишется в небольшие пространства, добавляя стиль и функциональность в интерьер."
+			},       
+			{
+			 "name":"Кресло",
+			 "price":"13 990",
+			 "img":"img/Furniture/4.jpg",
+			 "id":'3',
+			 "decr":"Комфортное кресло с высокой спинкой и мягкими подлокотниками, обитое качественной эко-кожей. Эргономичная форма позволяет удобно сидеть долгое время, а поворотный механизм и деревянные ножки придают современный акцент."
+			},
+			{
+			 "name":"Диван",
+			 "price":"30 200",
+			 "img":"img/Furniture/1.jpg",
+			 "id":'4',
+			 "decr":"Элегантный трехместный диван с мягкой обивкой из велюра, выполненный в современном минималистичном стиле. Широкие подлокотники и глубокие сиденья обеспечивают комфортный отдых, а металлические ножки придают легкость конструкции."
+			},
+			{
+			 "name":"Диван",
+			 "price":"19 800",
+			 "img":"img/Furniture/2.jpg",
+			 "id":'5',
+			 "decr":"Угловой диван с просторными секциями, обитый прочной тканью. Механизм раскладывания превращает его в полноценное спальное место, идеально подходящее для небольшой квартиры. Мягкие подушки спинки создают уютную атмосферу."
+			},
+			{
+			 "name":"Диван",
+			 "price":"27 100",
+			 "img":"img/Furniture/3.jpg",
+			 "id":'6',
+			 "decr":"Компактный двухместный диван с лаконичным дизайном и износостойкой тканевой обивкой. Идеально впишется в небольшие пространства, добавляя стиль и функциональность в интерьер."
+			},       
+			{
+			 "name":"Кресло",
+			 "price":"13 990",
+			 "img":"img/Furniture/4.jpg",
+			 "id":'7',
+			 "decr":"Комфортное кресло с высокой спинкой и мягкими подлокотниками, обитое качественной эко-кожей. Эргономичная форма позволяет удобно сидеть долгое время, а поворотный механизм и деревянные ножки придают современный акцент."
+			},
 			
-			btn.disabled = false;
+			
+	    ];
 
-			if(data.length === visible){
+		// Функции
+		function createCardProduct (){
+		
+			let newData = data.slice(0,visible)
+			furnitureList.innerHTML = '';
+			newData.map((item,el)=>{
+				   let {name,price,img,id} = item;
+			
+				   let product = document.createElement('li');
+				   product.classList.add('category__column');
+				   product.innerHTML = `
+				   <div class="category__item">
+				   <a class="_popup-link" href="#new-prodectN${id}">
+					   <div class="category__img _ibg">
+						   <img src=${img} alt=${name}>
+					   </div>
+				   </a>
+				   <div class="category__item-title">${name}</div>
+				   <div class="category__item-price">${price}₽</div>
+			   </div>
+				   `
+			   
+				   furnitureList.append(product)
+				})
+		}
+		function createPopupProduct (){
+				let newData = data.slice(0,visible)
+				popupContent.innerHTML = '';
+				newData.map((item,el)=>{
+			
+					let {name,price,img, decr, id} = item;
+			
+					let product  = document.createElement('div');
+					product.classList.add('popup', `popup_new-prodectN${id}`)
+					product.innerHTML = `
+					<div class="popup__content">
+					<div class="popup__body" data-id=${id} id="new-prodectN${id}">
+						<div class="popup__img _ibg"><img class="popup__img-img" src=${img} alt=${name}></div>
+						<div class="popup__info">
+						<div class="popup__title">${name}</div>
+						<div class="popup__price">${price}₽</div>
+						<button class="popup__btn hover" data-isBuy="false">
+							<div class="btn__text">Добавить в корзину</div>
+							<div class="loading">
+								<div class="loading_content">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+								</div>
+							</div>
+						</button>
+						<div class="popup__descr">${decr}</div>
+					</div>
+						<div class="popup__close"><span></span></div>
+					</div>
+				</div>
+				})
+			
+				`
+				popupContent.append(product)
+				
+			})
+		}
+		function bindPopupEvents() {
+				let popup_link = document.querySelectorAll('._popup-link');
+				let popups = document.querySelectorAll('.popup');
+				for (let i = 0; i < popup_link.length; i++) {
+					const el = popup_link[i];
+					el.addEventListener('click', function (e) {
+						let item = el.getAttribute('href').replace('#', '');
+						popup_open(item);
+						e.preventDefault();
+					});
+				}
+	
+				for (let index = 0; index < popups.length; index++) {
+					const popup = popups[index];
+					popup.addEventListener("click", function (e) {
+						if (!e.target.closest('.popup__body')) {
+							popup_close(e.target.closest('.popup'));
+							
+						};
+					});
+				}
+	
+				let popup_close_icon = document.querySelectorAll('.popup__close,._popup-close');
+				if (popup_close_icon) {
+					for (let index = 0; index < popup_close_icon.length; index++) {
+						const el = popup_close_icon[index];
+						el.addEventListener('click', function () {
+							popup_close(el.closest('.popup'));
+						})
+					}
+				}
+		}
+		function lazyLoading(){
+	
+		
+				btn.disabled = true;
+				    visible+=4
+				    setVisibleState()
+
+					createPopupProduct()
+		
+					createCardProduct()
+	
+					bindPopupEvents()
+					
+					btn.disabled = false;
+		
+					if(data.length === visible){
+						btn.style.display = 'none';
+					}
+						
+		}
+
+
+
+		loadSavedData()
+		createCardProduct()
+		createPopupProduct()
+		bindPopupEvents()
+
+	
+			if(furnitureList.children.length>=data.length){
 				btn.style.display = 'none';
 			}
-				
-		addEventPopup()
-		
+
+		btn.addEventListener('click',lazyLoading)	
 	}
-	
-	btn.addEventListener('click',lazyLoading)
-	
-	}
+
+
+
+
+
+
+	// Иницилизуем данные из локал
+    initialStore();
+
+});
+
+
 
 
 
