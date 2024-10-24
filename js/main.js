@@ -881,9 +881,17 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		localStorage.clear(); // Очитска localStorage
 	});
 
+
+
+
+
+
+
+
+
+
+
 });
-
-
 
 if(window.location.pathname === '/Furniture.html'){
 	const furnitureList = document.querySelector('.category__row');
@@ -980,7 +988,8 @@ if(window.location.pathname === '/Furniture.html'){
 	
 	
 	function createPopupProduct (){
-		data.map((item,el)=>{
+		let newData = data.slice(visible - 4,visible)
+		newData.map((item,el)=>{
 	
 			let {name,price,img, decr, id} = item;
 	
@@ -988,7 +997,7 @@ if(window.location.pathname === '/Furniture.html'){
 			product.classList.add('popup', `popup_new-prodectN${id}`)
 			product.innerHTML = `
 			<div class="popup__content">
-			<div class="popup__body" data-id=${id}>
+			<div class="popup__body" data-id=${id} id="new-prodectN${id}">
 				<div class="popup__img _ibg"><img class="popup__img-img" src=${img} alt=${name}></div>
 				<div class="popup__info">
 				<div class="popup__title">${name}</div>
@@ -1017,7 +1026,58 @@ if(window.location.pathname === '/Furniture.html'){
 	createPopupProduct()
 
 
-    function lazyLoading(){
+
+   // Функция для делегирования событий
+   function addEventPopup() {
+	furnitureList.addEventListener('click', (e) => {
+		let target = e.target;
+
+		if (target.closest('a._popup-link')) {
+			e.preventDefault();
+			let el = target.closest('a._popup-link');
+			let itemId = el.getAttribute('href').replace("#",'');
+
+			let popup = document.querySelector(`.popup_${itemId}`)
+			popup.classList.add('_active')
+			console.log(popup)
+		
+
+		}
+	});
+}
+
+document.addEventListener('click', (e) => {
+	let target = e.target;
+	
+	// Закрытие при клике на фон попапа или кнопку "закрыть"
+	if (target.closest('.popup__close') || target.classList.contains('_active')) {
+		
+		let activePopup = document.querySelector('.popup._active');
+		if (activePopup) {
+			activePopup.classList.remove('_active');
+		}
+	}
+
+	
+});
+
+document.addEventListener('keydown', function (e) {
+	if (e.code === 'Escape') {
+
+		
+		let activePopup = document.querySelector('.popup._active');
+		if (activePopup) {
+			activePopup.classList.remove('_active');
+		}
+	
+	}
+});
+
+
+
+
+
+	function lazyLoading(){
 
 		btn.disabled = true;
 
@@ -1034,13 +1094,16 @@ if(window.location.pathname === '/Furniture.html'){
 				btn.style.display = 'none';
 			}
 				
-		
+		addEventPopup()
 		
 	}
-
+	
 	btn.addEventListener('click',lazyLoading)
-
+	
 	}
+
+
+
 
 
 

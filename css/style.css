@@ -2007,6 +2007,7 @@ left: -35px;
       flex-wrap: wrap;
       justify-content: space-between;
   gap: 20px;
+  margin-bottom: 80px;
 }
 
 .category__column {
