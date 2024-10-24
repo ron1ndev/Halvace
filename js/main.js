@@ -653,10 +653,10 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		// Удаляем текущий продукт со страницы и обновляем количество продуктов на странице
         deletProd.remove(); // Удалаяем html продукт из корзины
   
-		if(window.location.pathname === '/index.html' || window.location.pathname === '/decor.html' || window.location.pathname === '/Furniture.html' || window.location.pathname === '/Lighting.html'){
+
         // Вызываем функцию для синхронизации продуктов к корзине и на странице
 		synchronizeButton(id);
-		}
+	
 
 
         // Вычитаем из суммы удаленный продукт и печатаем новую сумму и обновляем Storage
@@ -971,10 +971,10 @@ cartContent.addEventListener('touchend', touchEndHandler);
 	});
 	
 
-
+let furnitureId = document.querySelector('#Furniture');
 
     // Блок с динамическим выводом товаров
-	if(window.location.pathname === '/Furniture.html'){
+	if(furnitureId){
         // Переменные
 		const furnitureList = document.querySelector('.category__row');
 		const popupContent = document.querySelector('.popupContent');
