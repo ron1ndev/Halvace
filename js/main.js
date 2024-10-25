@@ -961,288 +961,431 @@ cartContent.addEventListener('touchend', touchEndHandler);
 					item.classList.remove('ShopСart');
 				}))
 	};
-    
-	// Событие нажатие на кнопку "Очистить корзину"
-	clearCartBtn.addEventListener('click',()=>{
+    		// Событие нажатие на кнопку "Очистить корзину"
+		clearCartBtn.addEventListener('click',()=>{
 
-		clearCart(); // Очитка корзины
-		resetButtons(); // Сбос кнопок
-		localStorage.clear(); // Очитска localStorage
-	});
-	
+			clearCart(); // Очитка корзины
+			resetButtons(); // Сбос кнопок
+			localStorage.clear(); // Очитска localStorage
+		});
+
 
 	// Блок с динамическим выводом товаров
 
+	let currentPage = window.location.pathname.replace('/','').replace('.html','')
+
 	// Уникальный элемент страницы Lighting
-    let furnitureId = document.querySelector('#Furniture');
+	let furnitureId = document.querySelector('#Furniture');
+	let LightingId = document.querySelector('#Lighting');
+	let decorId = document.querySelector('#decor');
 
-    // Проверяем есть блок со страницы Furniture
-	if(furnitureId){
+	
+	function initProductOnPage(category){
 
-        // Переменные
-		const furnitureList = document.querySelector('.category__row'); // Лист продуктов Furniture
-		const popupContent = document.querySelector('.popupContent'); // Блок со всеми попапами продуктов
-		const btn = document.querySelector('.category__btn'); // Кнопка "Показать еще"
-		// Элемент загрузки
-		const furnitureLoading = document.querySelector('.furniture_loading');
+		if(furnitureId || LightingId || decorId){
 
-		let visible = 4; // Начальное значение видимых товаров при загрузке страницы
-
-		// Функция по установке начального значаения visible при перезагрузке
-		function loadSavedData() {
-
-			let savedVisible = localStorage.getItem('visible'); // Из локал получаем новое значение visible и назначаем savedVisible
-		    // Если есть данные savedVisible, то устанавливаем новое значание для visible, иначе оставляем начальное значение visible
-			if (savedVisible) {
-				visible = parseInt(savedVisible, 10);
-			}else{
-				visible = 4;
+			// Переменные
+			const furnitureList = document.querySelector('.category__row'); // Лист продуктов Furniture
+			const popupContent = document.querySelector('.popupContent'); // Блок со всеми попапами продуктов
+			const btn = document.querySelector('.category__btn'); // Кнопка "Показать еще"
+			// Элемент загрузки
+			const furnitureLoading = document.querySelector('.furniture_loading');
+	
+			let visible = 4; // Начальное значение видимых товаров при загрузке страницы
+	
+			// Функция по установке начального значаения visible при перезагрузке
+			function loadSavedData() {
+	
+				let savedVisible = localStorage.getItem('visible'); // Из локал получаем новое значение visible и назначаем savedVisible
+				// Если есть данные savedVisible, то устанавливаем новое значание для visible, иначе оставляем начальное значение visible
+				if (savedVisible) {
+					visible = parseInt(savedVisible, 10);
+				}else{
+					visible = 4;
+				}
 			}
-		}
-        // Функция для установки нового значения visible в локал
-		function setVisibleState(){
-			localStorage.setItem('visible',visible)
-		}
-
-        // Пример новых данных всех категорий
-		const data2 = {
-			
-			'Мебель':[
-				{'name':'1'},
-				{'name':'2'}
-			],
-			'Освещение':[
-				{'name':'1'},
-				{'name':'2'}
-			],
-			'Декор':[
-				{'name':'1'},
-				{'name':'2'}
-			],
-		}
-		// Данные о продуктах
-		const data = [
-			{
-			  "name": "Диван «Модерн Блэк»",
-			  "price": "32 500",
-			  "img": "img/data/furniture/1.webp",
-			  "id": "0",
-			  "decr": "Элегантный черный диван с минималистичным дизайном, прекрасно вписывающийся в современные интерьеры."
-			},
-			{
-			  "name": "Диван «Сканди Лайт»",
-			  "price": "21 300",
-			  "img": "img/data/furniture/2.webp",
-			  "id": "1",
-			  "decr": "Светло-серый диван с чистыми линиями и скандинавским стилем, подходящий для небольших жилых пространств."
-			},
-			{
-			  "name": "Диван «Изумруд Комфорт»",
-			  "price": "29 800",
-			  "img": "img/data/furniture/3.webp",
-			  "id": "2",
-			  "decr": "Мягкий диван насыщенного изумрудного цвета с подушками для дополнительного уюта."
-			},
-			{
-			  "name": "Кресло «Ваниль Лаунж»",
-			  "price": "15 400",
-			  "img": "img/data/furniture/4.webp",
-			  "id": "3",
-			  "decr": "Стильное и мягкое кресло в кремовом цвете, добавляющее теплоту и комфорт в интерьер."
-			},
-			{
-			  "name": "Кресло «Шарм Классик»",
-			  "price": "31 600",
-			  "img": "img/data/furniture/5.webp",
-			  "id": "4",
-			  "decr": "Винтажное серое кресло с высокими спинками и текстурированной тканью, придающее комнате утонченный стиль."
-			},
-			{
-			  "name": "Диван «Уют Круг»",
-			  "price": "23 500",
-			  "img": "img/data/furniture/6.webp",
-			  "id": "5",
-			  "decr": "Круглый диван с мягкими подушками, идеальный для комфортного отдыха и уютных встреч."
-			},
-			{
-			  "name": "Диван «Графит Люкс»",
-			  "price": "28 900",
-			  "img": "img/data/furniture/7.webp",
-			  "id": "6",
-			  "decr": "Глубокий серый диван с плотными тканями и современным дизайном, подходящий для стильных гостиных."
-			},
-			{
-			  "name": "Кресло «Солнечный Чилл»",
-			  "price": "14 600",
-			  "img": "img/data/furniture/8.webp",
-			  "id": "7",
-			  "decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
-			},
-			{
-				"name": "Кресло «Шарм Классик»",
-				"price": "31 600",
-				"img": "img/data/furniture/9.webp",
-				"id": "8",
-				"decr": "Винтажное серое кресло с высокими спинками и текстурированной тканью, придающее комнате утонченный стиль."
-			  },
-			  {
-				"name": "Диван «Уют Круг»",
-				"price": "23 500",
-				"img": "img/data/furniture/10.webp",
-				"id": "9",
-				"decr": "Круглый диван с мягкими подушками, идеальный для комфортного отдыха и уютных встреч."
-			  },
-			  {
-				"name": "Диван «Графит Люкс»",
-				"price": "28 900",
-				"img": "img/data/furniture/11.webp",
-				"id": "10",
-				"decr": "Глубокий серый диван с плотными тканями и современным дизайном, подходящий для стильных гостиных."
-			  },
-			  {
-				"name": "Кресло «Солнечный Чилл»",
-				"price": "14 600",
-				"img": "img/data/furniture/12.webp",
-				"id": "11",
-				"decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
-			  }
-		  ];
-		  
-		// Функция создания новых продуктов
-		function createCardProduct (){
-		
-			let newData = data.slice(0,visible) // Создаем новый массив учитывая начальное значение показов товара
-			furnitureList.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
-
-			// Проходимя по массиву с продуктами и генерируем новый продукт
-			newData.map((item)=>{
-				   let {name,price,img,id} = item;
-			
-				   let product = document.createElement('li');
-				   product.classList.add('category__column');
-				   product.innerHTML = `
-				   <div class="category__item">
-				   <a class="_popup-link" href="#new-prodectN${id}">
-					   <div class="category__img _ibg">
-						   <img src=${img} alt=${name}>
-					   </div>
-				   </a>
-				   <div class="category__item-title">${name}</div>
-				   <div class="category__item-price">${price}₽</div>
-			   </div>
-				   `
-				   furnitureList.append(product) // Добавляем продукт в лист продуктов
-			})
-		}
-		// Функция создания новых попапов для каждого продукта
-		function createPopupProduct (){
-
-				let newData = data.slice(0,visible) // Создаем новый массив попапов продукта учитывая начальное значение показов товара
-				popupContent.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
-
-				// Проходимя по массиву с продуктами и генерируем новый попап продукта
-				newData.map((item)=>{
-					let {name,price,img, decr, id} = item;
-					let product  = document.createElement('div');
-					product.classList.add('popup', `popup_new-prodectN${id}`)
-					product.innerHTML = `
-					<div class="popup__content">
-					<div class="popup__body" data-id=${id} id="new-prodectN${id}">
-						<div class="popup__img _ibg"><img class="popup__img-img" src=${img} alt=${name}></div>
-						<div class="popup__info">
-						<div class="popup__title">${name}</div>
-						<div class="popup__price">${price}₽</div>
-						<button class="popup__btn hover" data-isBuy="false">
-							<div class="btn__text">Добавить в корзину</div>
-							<div class="loading">
-								<div class="loading_content">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-								</div>
-							</div>
-						</button>
-						<div class="popup__descr">${decr}</div>
-					</div>
-						<div class="popup__close"><span></span></div>
-					</div>
-				</div>
-				})
-			
-				`
-				popupContent.append(product) // Добавляем попап продукта в лист попапов
-			    })
-		}
-		// Функция по перезначению добавления обработчиков на динамические продукты для открытия попапов к ним
-		function bindPopupEvents() {
-				let popup_link = document.querySelectorAll('._popup-link');
-				let popups = document.querySelectorAll('.popup');
-				for (let i = 0; i < popup_link.length; i++) {
-					const el = popup_link[i];
-					el.addEventListener('click', function (e) {
-						let item = el.getAttribute('href').replace('#', '');
-						popup_open(item);
-						e.preventDefault();
-					});
-				}
+			// Функция для установки нового значения visible в локал
+			function setVisibleState(){
+				localStorage.setItem('visible',visible)
+			}
 	
-				for (let index = 0; index < popups.length; index++) {
-					const popup = popups[index];
-					popup.addEventListener("click", function (e) {
-						if (!e.target.closest('.popup__body')) {
-							popup_close(e.target.closest('.popup'));
-							
-						};
-					});
-				}
-	
-				let popup_close_icon = document.querySelectorAll('.popup__close,._popup-close');
-				if (popup_close_icon) {
-					for (let index = 0; index < popup_close_icon.length; index++) {
-						const el = popup_close_icon[index];
-						el.addEventListener('click', function () {
-							popup_close(el.closest('.popup'));
-						})
+			// Пример новых данных всех категорий
+			const data = {
+				
+				'Furniture':[
+					{
+					  "name": "Диван «Модерн Блэк»",
+					  "price": "32 500",
+					  "img": "img/data/furniture/1.webp",
+					  "id": "0",
+					  "decr": "Элегантный черный диван с минималистичным дизайном, прекрасно вписывающийся в современные интерьеры."
+					},
+					{
+					  "name": "Диван «Сканди Лайт»",
+					  "price": "21 300",
+					  "img": "img/data/furniture/2.webp",
+					  "id": "1",
+					  "decr": "Светло-серый диван с чистыми линиями и скандинавским стилем, подходящий для небольших жилых пространств."
+					},
+					{
+					  "name": "Диван «Изумруд Комфорт»",
+					  "price": "29 800",
+					  "img": "img/data/furniture/3.webp",
+					  "id": "2",
+					  "decr": "Мягкий диван насыщенного изумрудного цвета с подушками для дополнительного уюта."
+					},
+					{
+					  "name": "Кресло «Ваниль Лаунж»",
+					  "price": "15 400",
+					  "img": "img/data/furniture/4.webp",
+					  "id": "3",
+					  "decr": "Стильное и мягкое кресло в кремовом цвете, добавляющее теплоту и комфорт в интерьер."
+					},
+					{
+					  "name": "Кресло «Шарм Классик»",
+					  "price": "31 600",
+					  "img": "img/data/furniture/5.webp",
+					  "id": "4",
+					  "decr": "Винтажное серое кресло с высокими спинками и текстурированной тканью, придающее комнате утонченный стиль."
+					},
+					{
+					  "name": "Диван «Уют Круг»",
+					  "price": "23 500",
+					  "img": "img/data/furniture/6.webp",
+					  "id": "5",
+					  "decr": "Круглый диван с мягкими подушками, идеальный для комфортного отдыха и уютных встреч."
+					},
+					{
+					  "name": "Диван «Графит Люкс»",
+					  "price": "28 900",
+					  "img": "img/data/furniture/7.webp",
+					  "id": "6",
+					  "decr": "Глубокий серый диван с плотными тканями и современным дизайном, подходящий для стильных гостиных."
+					},
+					{
+					  "name": "Кресло «Солнечный Чилл»",
+					  "price": "14 600",
+					  "img": "img/data/furniture/8.webp",
+					  "id": "7",
+					  "decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
+					},
+					{
+						"name": "Кресло «Шарм Классик»",
+						"price": "31 600",
+						"img": "img/data/furniture/9.webp",
+						"id": "8",
+						"decr": "Винтажное серое кресло с высокими спинками и текстурированной тканью, придающее комнате утонченный стиль."
+					  },
+					  {
+						"name": "Диван «Уют Круг»",
+						"price": "23 500",
+						"img": "img/data/furniture/10.webp",
+						"id": "9",
+						"decr": "Круглый диван с мягкими подушками, идеальный для комфортного отдыха и уютных встреч."
+					  },
+					  {
+						"name": "Диван «Графит Люкс»",
+						"price": "28 900",
+						"img": "img/data/furniture/11.webp",
+						"id": "10",
+						"decr": "Глубокий серый диван с плотными тканями и современным дизайном, подходящий для стильных гостиных."
+					  },
+					  {
+						"name": "Кресло «Солнечный Чилл»",
+						"price": "14 600",
+						"img": "img/data/furniture/12.webp",
+						"id": "11",
+						"decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
+					  }
+				  ],
+				'Lighting':[
+					{
+					  "name": "Диван «Модерн Блэк»",
+					  "price": "32 500",
+					  "img": "img/data/light/1.webp",
+					  "id": "0",
+					  "decr": "Элегантный черный диван с минималистичным дизайном, прекрасно вписывающийся в современные интерьеры."
+					},
+					{
+					  "name": "Диван «Сканди Лайт»",
+					  "price": "21 300",
+					  "img": "img/data/light/2.webp",
+					  "id": "1",
+					  "decr": "Светло-серый диван с чистыми линиями и скандинавским стилем, подходящий для небольших жилых пространств."
+					},
+					{
+					  "name": "Диван «Изумруд Комфорт»",
+					  "price": "29 800",
+					  "img": "img/data/light/3.webp",
+					  "id": "2",
+					  "decr": "Мягкий диван насыщенного изумрудного цвета с подушками для дополнительного уюта."
+					},
+					{
+					  "name": "Кресло «Ваниль Лаунж»",
+					  "price": "15 400",
+					  "img": "img/data/light/4.webp",
+					  "id": "3",
+					  "decr": "Стильное и мягкое кресло в кремовом цвете, добавляющее теплоту и комфорт в интерьер."
+					},
+					{
+					  "name": "Кресло «Шарм Классик»",
+					  "price": "31 600",
+					  "img": "img/data/light/5.webp",
+					  "id": "4",
+					  "decr": "Винтажное серое кресло с высокими спинками и текстурированной тканью, придающее комнате утонченный стиль."
+					},
+					{
+					  "name": "Диван «Уют Круг»",
+					  "price": "23 500",
+					  "img": "img/data/light/6.webp",
+					  "id": "5",
+					  "decr": "Круглый диван с мягкими подушками, идеальный для комфортного отдыха и уютных встреч."
+					},
+					{
+					  "name": "Диван «Графит Люкс»",
+					  "price": "28 900",
+					  "img": "img/data/light/7.webp",
+					  "id": "6",
+					  "decr": "Глубокий серый диван с плотными тканями и современным дизайном, подходящий для стильных гостиных."
+					},
+					{
+					  "name": "Кресло «Солнечный Чилл»",
+					  "price": "14 600",
+					  "img": "img/data/light/8.webp",
+					  "id": "7",
+					  "decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
+					},
+					{
+						"name": "Кресло «Шарм Классик»",
+						"price": "31 600",
+						"img": "img/data/light/9.webp",
+						"id": "8",
+						"decr": "Винтажное серое кресло с высокими спинками и текстурированной тканью, придающее комнате утонченный стиль."
+					  },
+					  {
+						"name": "Диван «Уют Круг»",
+						"price": "23 500",
+						"img": "img/data/light/10.webp",
+						"id": "9",
+						"decr": "Круглый диван с мягкими подушками, идеальный для комфортного отдыха и уютных встреч."
+					  },
+					  {
+						"name": "Диван «Графит Люкс»",
+						"price": "28 900",
+						"img": "img/data/light/11.webp",
+						"id": "10",
+						"decr": "Глубокий серый диван с плотными тканями и современным дизайном, подходящий для стильных гостиных."
+					  },
+					  {
+						"name": "Кресло «Солнечный Чилл»",
+						"price": "14 600",
+						"img": "img/data/light/12.webp",
+						"id": "11",
+						"decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
+					  }
+				  ],
+				  'decor':[
+					{
+					  "name": "Диван «Модерн Блэк»",
+					  "price": "32 500",
+					  "img": "img/data/decor/1.webp",
+					  "id": "0",
+					  "decr": "Элегантный черный диван с минималистичным дизайном, прекрасно вписывающийся в современные интерьеры."
+					},
+					{
+					  "name": "Диван «Сканди Лайт»",
+					  "price": "21 300",
+					  "img": "img/data/decor/2.webp",
+					  "id": "1",
+					  "decr": "Светло-серый диван с чистыми линиями и скандинавским стилем, подходящий для небольших жилых пространств."
+					},
+					{
+					  "name": "Диван «Изумруд Комфорт»",
+					  "price": "29 800",
+					  "img": "img/data/decor/3.webp",
+					  "id": "2",
+					  "decr": "Мягкий диван насыщенного изумрудного цвета с подушками для дополнительного уюта."
+					},
+					{
+					  "name": "Кресло «Ваниль Лаунж»",
+					  "price": "15 400",
+					  "img": "img/data/decor/4.webp",
+					  "id": "3",
+					  "decr": "Стильное и мягкое кресло в кремовом цвете, добавляющее теплоту и комфорт в интерьер."
+					},
+					{
+					  "name": "Кресло «Шарм Классик»",
+					  "price": "31 600",
+					  "img": "img/data/decor/5.webp",
+					  "id": "4",
+					  "decr": "Винтажное серое кресло с высокими спинками и текстурированной тканью, придающее комнате утонченный стиль."
+					},
+					{
+					  "name": "Диван «Уют Круг»",
+					  "price": "23 500",
+					  "img": "img/data/decor/6.webp",
+					  "id": "5",
+					  "decr": "Круглый диван с мягкими подушками, идеальный для комфортного отдыха и уютных встреч."
+					},
+					{
+					  "name": "Диван «Графит Люкс»",
+					  "price": "28 900",
+					  "img": "img/data/decor/7.webp",
+					  "id": "6",
+					  "decr": "Глубокий серый диван с плотными тканями и современным дизайном, подходящий для стильных гостиных."
+					},
+					{
+					  "name": "Кресло «Солнечный Чилл»",
+					  "price": "14 600",
+					  "img": "img/data/decor/8.webp",
+					  "id": "7",
+					  "decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
 					}
-				}
-		}
-		// Функция для динамиеской подгрузки товаров
-		function lazyLoading(){
+				  ]
+			}
+			  
+			// Функция создания новых продуктов
+			function createCardProduct (categoryData){
+			
+				let newData = data[categoryData].slice(0,visible) // Создаем новый массив учитывая начальное значение показов товара
+				furnitureList.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
 	
-				btn.disabled = true; // Блокируем кнопку "Показать еще"
-
-				    visible+=4; // Увеличиваем начальное значание показа товаров
-
-				    setVisibleState(); // Устанавливаем акутальное значение начального показа товаров
-					createPopupProduct(); // Отрисовываем новый список товаров
-					createCardProduct(); // Отрисовываем нвоый список попапов к продуктам
-					bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
-					
-					btn.disabled = false; // Разблокируем кнопку "Показать еще"
-		            // Проверяем если длина массива продуктов равна видимому количеству товаров, то убираем кнопку "Показать еще"
-					if(data.length === visible){
-						btn.style.display = 'none';
-					};			
+				// Проходимя по массиву с продуктами и генерируем новый продукт
+				newData.map((item)=>{
+					   let {name,price,img,id} = item;
+				
+					   let product = document.createElement('li');
+					   product.classList.add('category__column');
+					   product.innerHTML = `
+					   <div class="category__item">
+					   <a class="_popup-link" href="#new-prodectN${id}">
+						   <div class="category__img _ibg">
+							   <img src=${img} alt=${name}>
+						   </div>
+					   </a>
+					   <div class="category__item-title">${name}</div>
+					   <div class="category__item-price">${price}₽</div>
+				   </div>
+					   `
+					   furnitureList.append(product) // Добавляем продукт в лист продуктов
+				})
+			}
+			// Функция создания новых попапов для каждого продукта
+			function createPopupProduct (categoryData){
+	
+					let newData = data[categoryData].slice(0,visible) // Создаем новый массив попапов продукта учитывая начальное значение показов товара
+					popupContent.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
+	
+					// Проходимя по массиву с продуктами и генерируем новый попап продукта
+					newData.map((item)=>{
+						let {name,price,img, decr, id} = item;
+						let product  = document.createElement('div');
+						product.classList.add('popup', `popup_new-prodectN${id}`)
+						product.innerHTML = `
+						<div class="popup__content">
+						<div class="popup__body" data-id=${id} id="new-prodectN${id}">
+							<div class="popup__img _ibg"><img class="popup__img-img" src=${img} alt=${name}></div>
+							<div class="popup__info">
+							<div class="popup__title">${name}</div>
+							<div class="popup__price">${price}₽</div>
+							<button class="popup__btn hover" data-isBuy="false">
+								<div class="btn__text">Добавить в корзину</div>
+								<div class="loading">
+									<div class="loading_content">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+									</div>
+								</div>
+							</button>
+							<div class="popup__descr">${decr}</div>
+						</div>
+							<div class="popup__close"><span></span></div>
+						</div>
+					</div>
+					})
+				
+					`
+					popupContent.append(product) // Добавляем попап продукта в лист попапов
+					})
+			}
+			// Функция по перезначению добавления обработчиков на динамические продукты для открытия попапов к ним
+			function bindPopupEvents() {
+					let popup_link = document.querySelectorAll('._popup-link');
+					let popups = document.querySelectorAll('.popup');
+					for (let i = 0; i < popup_link.length; i++) {
+						const el = popup_link[i];
+						el.addEventListener('click', function (e) {
+							let item = el.getAttribute('href').replace('#', '');
+							popup_open(item);
+							e.preventDefault();
+						});
+					}
+		
+					for (let index = 0; index < popups.length; index++) {
+						const popup = popups[index];
+						popup.addEventListener("click", function (e) {
+							if (!e.target.closest('.popup__body')) {
+								popup_close(e.target.closest('.popup'));
+								
+							};
+						});
+					}
+		
+					let popup_close_icon = document.querySelectorAll('.popup__close,._popup-close');
+					if (popup_close_icon) {
+						for (let index = 0; index < popup_close_icon.length; index++) {
+							const el = popup_close_icon[index];
+							el.addEventListener('click', function () {
+								popup_close(el.closest('.popup'));
+							})
+						}
+					}
+			}
+			// Функция для динамиеской подгрузки товаров
+			function lazyLoading(){
+		
+					btn.disabled = true; // Блокируем кнопку "Показать еще"
+	
+						visible+=4; // Увеличиваем начальное значание показа товаров
+	
+						setVisibleState(); // Устанавливаем акутальное значение начального показа товаров
+						createPopupProduct(category); // Отрисовываем новый список товаров
+						createCardProduct(category); // Отрисовываем нвоый список попапов к продуктам
+						bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
+						
+						btn.disabled = false; // Разблокируем кнопку "Показать еще"
+						// Проверяем если длина массива продуктов равна видимому количеству товаров, то убираем кнопку "Показать еще"
+						if(data[category].length === visible){
+							btn.style.display = 'none';
+						};			
+			}
+	
+			loadSavedData(); // Устаналиваем начальное значание visible
+			createCardProduct(category); // Создание динамических товаров
+			createPopupProduct(category); // Создание динамических попапов для товаров
+			bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
+	
+			// Проверяем равно ли количество видимых товаров на странице количеству в массиве продуктов
+			if(furnitureList.children.length>=data[category].length){
+				btn.style.display = 'none';  // Если да, то кнопку "Добавить еще" удаляем
+			}
+	
+	
+			// Функционал для показа элемта загрузки
+			// Скрываем элемент загрузки, когда все товары подгрузились
+			furnitureLoading.style.display = 'none'
+			btn.style.opacity = '1';
+			btn.style.visibility = 'visible';
+	
+			// Если была нажата кнопка "Добавить еще" - подгружаем новые товары на страницу и сохраняем их в локал
+			btn.addEventListener('click',lazyLoading)	
 		}
+	}
 
-		loadSavedData(); // Устаналиваем начальное значание visible
-		createCardProduct(); // Создание динамических товаров
-		createPopupProduct(); // Создание динамических попапов для товаров
-		bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
-
-        // Проверяем равно ли количество видимых товаров на странице количеству в массиве продуктов
-		if(furnitureList.children.length>=data.length){
-			btn.style.display = 'none';  // Если да, то кнопку "Добавить еще" удаляем
-		}
+	initProductOnPage(currentPage)
+    // Проверяем есть блок со страницы Furniture
 
 
-		// Функционал для показа элемта загрузки
-		// Скрываем элемент загрузки, когда все товары подгрузились
-		furnitureLoading.style.display = 'none'
-		btn.style.opacity = '1';
-		btn.style.visibility = 'visible';
-
-		// Если была нажата кнопка "Добавить еще" - подгружаем новые товары на страницу и сохраняем их в локал
-		btn.addEventListener('click',lazyLoading)	
-    }
+		
 
 	// Иницилизуем данные из локал
 	initialStore();   

@@ -72,7 +72,7 @@
         </header>
         <main class="page">
             <!-- Основной контент -->
-            <section class="Furniture">
+            <section class="Furniture" id='decor'>
                 <div class="_container">
 					<div class="subHeader">
 						<h1 class="title">Декор</h1>
@@ -81,7 +81,7 @@
                     <div class="category__content">
                         <div class="category">
                             <ul class="category__row">
-                                <li class="category__column">
+                                <!-- <li class="category__column">
                                     <div class="category__item">
 										<a class="_popup-link" href="#new-prodectN3">
 											<div class="category__img category__img-decor _ibg">
@@ -146,8 +146,19 @@
                                         <div class="category__item-title">Полка</div>
                                         <div class="category__item-price">2 600₽ </div>
                                     </div>
-                                </li>
+                                </li> -->
                             </ul>
+							<button class="category__btn">
+								<div class="btn__text">Показать еще</div>
+								<div class="loading">
+									<div class="loading_content">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+									</div>
+								</div>
+							</button>
+							<div class="furniture_loading">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle fill="#18181C" stroke="#18181C" stroke-width="15" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#18181C" stroke="#18181C" stroke-width="15" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#18181C" stroke="#18181C" stroke-width="15" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>
+							</div>
                         </div>
                     </div>
                 </div>
@@ -242,146 +253,11 @@
 			</div>
 		</div>
 		</footer>
+		<div class="popupContent">
+			
+		</div>
     </div>
-    <div class="popup popup_new-prodect1">
-	<div class="popup__content">
-		<div class="popup__body">
-			<div class="popup__img"><picture><source srcset="img/popup/1.webp" type="image/webp"><img class="popup__img-img" src="img/popup/1.png" alt=""></picture></div>
-			<div class="popup__info">
-				<div class="popup__title">Ваза</div>
-				<div class="popup__price">1 780₽</div>
-				<div class="popup__articol">Артикул: 0001</div>
-				<div class="popup__descr">Описание товара:</div>
 
-				<!-- <div class="popup__quantity">Количество</div> -->
-				<!-- <div class="popup__quantity-value"><input type="number" onkeypress='validate(event)' value="1"></div> -->
-				<button class="popup__btn" data-isBuy="false">
-					<div class="btn__text">Добавить в корзину</div>
-					<div class="loading">
-						<div class="loading_content">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-						</div>
-					</div>
-				</button>
-			</div>
-			<div class="popup__close"><span></span></div>
-		</div>
-	</div>
-</div>
-<div class="popup popup_new-prodect2">
-	<div class="popup__content">
-		<div class="popup__body">
-			<div class="popup__img"><picture><source srcset="img/popup/2.webp" type="image/webp"><img class="popup__img-img" src="img/popup/2.png" alt=""></picture></div>
-			<div class="popup__info">
-				<div class="popup__title">Полка</div>
-				<div class="popup__price">4 250₽</div>
-				<div class="popup__articol">Артикул: 0002</div>
-				<div class="popup__descr">Описание товара:</div>
-				<button class="popup__btn" data-isBuy="false">
-					<div class="btn__text">Добавить в корзину</div>
-					<div class="loading">
-						<div class="loading_content">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-						</div>
-					</div>
-				</button>
-			</div>
-			<div class="popup__close"><span></span></div>
-		</div>
-	</div>
-</div>
-<div class="popup popup_new-prodect3">
-	<div class="popup__content">
-		<div class="popup__body">
-			<div class="popup__img"><picture><source srcset="img/popup/3.webp" type="image/webp"><img class="popup__img-img" src="img/popup/3.png" alt=""></picture></div>
-			<div class="popup__info">
-				<div class="popup__title">Часы</div>
-				<div class="popup__price">3 720₽</div>
-				<div class="popup__articol">Артикул: 0003</div>
-				<div class="popup__descr">Описание товара:</div>
-				<button class="popup__btn" data-isBuy="false">
-					<div class="btn__text">Добавить в корзину</div>
-					<div class="loading">
-						<div class="loading_content">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-						</div>
-					</div>
-				</button>
-			</div>
-			<div class="popup__close"><span></span></div>
-		</div>
-	</div>
-</div>
-<div class="popup popup_new-prodectN1">
-	<div class="popup__content">
-		<div class="popup__body">
-			<div class="popup__img _ibg"><picture><source srcset="img/popup/n1.webp" type="image/webp"><img class="popup__img-img" src="img/popup/n1.jpg" alt=""></picture></div>
-			<div class="popup__info">
-				<div class="popup__title">Диван</div>
-				<div class="popup__price">19 800₽</div>
-				<div class="popup__articol">Артикул: 0000</div>
-				<div class="popup__descr">Описание товара:</div>
-				<button class="popup__btn" data-isBuy="false">
-					<div class="btn__text">Добавить в корзину</div>
-					<div class="loading">
-						<div class="loading_content">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-						</div>
-					</div>
-				</button>
-			</div>
-			<div class="popup__close"><span></span></div>
-		</div>
-	</div>
-</div>
-<div class="popup popup_new-prodectN2">
-	<div class="popup__content">
-		<div class="popup__body">
-			<div class="popup__img _ibg"><picture><source srcset="img/shop/4.webp" type="image/webp"><img class="popup__img-img" src="img/shop/4.jpg" alt=""></picture></div>
-			<div class="popup__info">
-				<div class="popup__title">Лампа</div>
-				<div class="popup__price">3 400₽</div>
-				<div class="popup__articol">Артикул: 0000</div>
-				<div class="popup__descr">Описание товара:</div>
-				<button class="popup__btn" data-isBuy="false">
-					<div class="btn__text">Добавить в корзину</div>
-					<div class="loading">
-						<div class="loading_content">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-						</div>
-					</div>
-				</button>
-			</div>
-			<div class="popup__close"><span></span></div>
-		</div>
-	</div>
-</div>
-<div class="popup popup_new-prodectN3">
-	<div class="popup__content">
-		<div class="popup__body">
-			<div class="popup__img _ibg"><picture><source srcset="img/shop/7.webp" type="image/webp"><img class="popup__img-img" src="img/shop/7.jpg" alt=""></picture></div>
-			<div class="popup__info">
-				<div class="popup__title">Ваза</div>
-				<div class="popup__price">1 790₽</div>
-				<div class="popup__articol">Артикул: 0000</div>
-				<div class="popup__descr">Описание товара:
-					<div class="popup__descr_text">
-						Декор для дома — это элементы и аксессуары, используемые для создания уюта, эстетики и индивидуального стиля в интерьере. Включает предметы, такие как картины, вазы, подушки, ковры, статуэтки, зеркала и светильники.
-					</div>
-				</div>
-				<button class="popup__btn" data-isBuy="false">
-					<div class="btn__text">Добавить в корзину</div>
-					<div class="loading">
-						<div class="loading_content">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
-						</div>
-					</div>
-				</button>
-			</div>
-			<div class="popup__close"><span></span></div>
-		</div>
-	</div>
-</div>
 <div class="popup popup_send">
 	<div class="popup__content">
 		<div class="popup__body popup__body-send">
