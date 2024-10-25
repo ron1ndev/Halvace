@@ -972,7 +972,7 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
 	// Блок с динамическим выводом товаров
 
-	let currentPage = window.location.pathname.replace('/','').replace('.html','')
+	let currentPage = window.location.pathname.replace('/','').replace('.html','').replace('Halvace','');
 
 	// Уникальный элемент страницы Lighting
 	let furnitureId = document.querySelector('#Furniture');
