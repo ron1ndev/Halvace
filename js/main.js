@@ -971,33 +971,40 @@ cartContent.addEventListener('touchend', touchEndHandler);
 	});
 	
 
-let furnitureId = document.querySelector('#Furniture');
+	// Блок с динамическим выводом товаров
 
-    // Блок с динамическим выводом товаров
+	// Уникальный элемент страницы Lighting
+    let furnitureId = document.querySelector('#Furniture');
+
+    // Проверяем есть блок со страницы Furniture
 	if(furnitureId){
+
         // Переменные
-		const furnitureList = document.querySelector('.category__row');
-		const popupContent = document.querySelector('.popupContent');
-		const btn = document.querySelector('.category__btn');
-		let visible = 4;
+		const furnitureList = document.querySelector('.category__row'); // Лист продуктов Furniture
+		const popupContent = document.querySelector('.popupContent'); // Блок со всеми попапами продуктов
+		const btn = document.querySelector('.category__btn'); // Кнопка "Показать еще"
+		// Элемент загрузки
+		const furnitureLoading = document.querySelector('.furniture_loading');
 
-		
+		let visible = 4; // Начальное значение видимых товаров при загрузке страницы
 
-
+		// Функция по установке начального значаения visible при перезагрузке
 		function loadSavedData() {
-			let savedVisible = localStorage.getItem('visible');
+
+			let savedVisible = localStorage.getItem('visible'); // Из локал получаем новое значение visible и назначаем savedVisible
+		    // Если есть данные savedVisible, то устанавливаем новое значание для visible, иначе оставляем начальное значение visible
 			if (savedVisible) {
 				visible = parseInt(savedVisible, 10);
 			}else{
 				visible = 4;
 			}
 		}
-
+        // Функция для установки нового значения visible в локал
 		function setVisibleState(){
 			localStorage.setItem('visible',visible)
 		}
 
-
+        // Пример новых данных всех категорий
 		const data2 = {
 			
 			'Мебель':[
@@ -1013,7 +1020,7 @@ let furnitureId = document.querySelector('#Furniture');
 				{'name':'2'}
 			],
 		}
-		// Данные
+		// Данные о продуктах
 		const data = [
 			{
 			  "name": "Диван «Модерн Блэк»",
@@ -1101,13 +1108,14 @@ let furnitureId = document.querySelector('#Furniture');
 			  }
 		  ];
 		  
-
-		// Функции
+		// Функция создания новых продуктов
 		function createCardProduct (){
 		
-			let newData = data.slice(0,visible)
-			furnitureList.innerHTML = '';
-			newData.map((item,el)=>{
+			let newData = data.slice(0,visible) // Создаем новый массив учитывая начальное значение показов товара
+			furnitureList.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
+
+			// Проходимя по массиву с продуктами и генерируем новый продукт
+			newData.map((item)=>{
 				   let {name,price,img,id} = item;
 			
 				   let product = document.createElement('li');
@@ -1123,17 +1131,18 @@ let furnitureId = document.querySelector('#Furniture');
 				   <div class="category__item-price">${price}₽</div>
 			   </div>
 				   `
-			   
-				   furnitureList.append(product)
-				})
+				   furnitureList.append(product) // Добавляем продукт в лист продуктов
+			})
 		}
+		// Функция создания новых попапов для каждого продукта
 		function createPopupProduct (){
-				let newData = data.slice(0,visible)
-				popupContent.innerHTML = '';
-				newData.map((item,el)=>{
-			
+
+				let newData = data.slice(0,visible) // Создаем новый массив попапов продукта учитывая начальное значение показов товара
+				popupContent.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
+
+				// Проходимя по массиву с продуктами и генерируем новый попап продукта
+				newData.map((item)=>{
 					let {name,price,img, decr, id} = item;
-			
 					let product  = document.createElement('div');
 					product.classList.add('popup', `popup_new-prodectN${id}`)
 					product.innerHTML = `
@@ -1159,10 +1168,10 @@ let furnitureId = document.querySelector('#Furniture');
 				})
 			
 				`
-				popupContent.append(product)
-				
-			})
+				popupContent.append(product) // Добавляем попап продукта в лист попапов
+			    })
 		}
+		// Функция по перезначению добавления обработчиков на динамические продукты для открытия попапов к ним
 		function bindPopupEvents() {
 				let popup_link = document.querySelectorAll('._popup-link');
 				let popups = document.querySelectorAll('.popup');
@@ -1195,50 +1204,48 @@ let furnitureId = document.querySelector('#Furniture');
 					}
 				}
 		}
+		// Функция для динамиеской подгрузки товаров
 		function lazyLoading(){
 	
-		
-				btn.disabled = true;
-				    visible+=4
-				    setVisibleState()
+				btn.disabled = true; // Блокируем кнопку "Показать еще"
 
-					createPopupProduct()
-		
-					createCardProduct()
-	
-					bindPopupEvents()
+				    visible+=4; // Увеличиваем начальное значание показа товаров
+
+				    setVisibleState(); // Устанавливаем акутальное значение начального показа товаров
+					createPopupProduct(); // Отрисовываем новый список товаров
+					createCardProduct(); // Отрисовываем нвоый список попапов к продуктам
+					bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
 					
-					btn.disabled = false;
-		
+					btn.disabled = false; // Разблокируем кнопку "Показать еще"
+		            // Проверяем если длина массива продуктов равна видимому количеству товаров, то убираем кнопку "Показать еще"
 					if(data.length === visible){
 						btn.style.display = 'none';
-					}
-						
+					};			
 		}
-	const furnitureLoading = document.querySelector('.furniture_loading');
 
-		
-			loadSavedData()
-			createCardProduct()
-			createPopupProduct()
-			bindPopupEvents()
+		loadSavedData(); // Устаналиваем начальное значание visible
+		createCardProduct(); // Создание динамических товаров
+		createPopupProduct(); // Создание динамических попапов для товаров
+		bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
 
-			if(furnitureList.children.length>=data.length){
-				btn.style.display = 'none';
-			}
-
-
-				// Иницилизуем данные из локал
-				initialStore();
-
-				furnitureLoading.style.display = 'none'
-				btn.style.opacity = '1';
-				btn.style.visibility = 'visible';
+        // Проверяем равно ли количество видимых товаров на странице количеству в массиве продуктов
+		if(furnitureList.children.length>=data.length){
+			btn.style.display = 'none';  // Если да, то кнопку "Добавить еще" удаляем
+		}
 
 
+		// Функционал для показа элемта загрузки
+		// Скрываем элемент загрузки, когда все товары подгрузились
+		furnitureLoading.style.display = 'none'
+		btn.style.opacity = '1';
+		btn.style.visibility = 'visible';
+
+		// Если была нажата кнопка "Добавить еще" - подгружаем новые товары на страницу и сохраняем их в локал
 		btn.addEventListener('click',lazyLoading)	
-	}
+    }
 
+	// Иницилизуем данные из локал
+	initialStore();   
 });
 
 
