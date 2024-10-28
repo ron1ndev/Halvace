@@ -1,14 +1,6 @@
 "use strict";
 document.addEventListener('DOMContentLoaded', function () {
 
-
-
-
-
-
-
-
-
 let unlock = true;
 
 	// Функционал открытия попапов на странице, блокировка контента при октрытии попапа
@@ -150,42 +142,28 @@ let unlock = true;
 
 
 
-   const catalogShop = document.querySelector('.header__item-dropdown');
-   const submenu = document.querySelector('.header__submenu');
-
-
-
-   catalogShop.addEventListener('mousemove',(e)=>{
-	
-	
+   // Фунционал наведение на выпадающее меню	
+   const catalogShop = document.querySelector('.header__item-dropdown'); // Пункт меню с которого будет выпадать меню
+   const submenu = document.querySelector('.header__submenu'); // Скрытый блок с под меню
+     
+    // Функция для показа под меню
+	function showSubMenu (e){
 		if(e.currentTarget.classList.contains('header__item-dropdown')){
 			catalogShop.classList.add('header__item-dropdown-active');
-			submenu.classList.add('header__submenu-active');
+			submenu.classList.add('header__submenu-active'); // Показываем меню
 		}
-			
+	};
+    // Функция для скрытия под меню
+	function hideSubMenu(){
+		submenu.classList.remove('header__submenu-active');
+		catalogShop.classList.remove('header__item-dropdown-active');
+	};
 
-	
-})
+   // Событие на движение мыши по объеку 
+    catalogShop.addEventListener('mousemove',(e) => showSubMenu(e));
 
-
-
-   catalogShop.addEventListener('mouseout',()=>{
-
-	submenu.classList.remove('header__submenu-active');
-	catalogShop.classList.remove('header__item-dropdown-active');
-	
-   })
-
-
- 
-  
-  
-
-
-
-
-
-
+    // Событие увода мыши с объекта меню
+    catalogShop.addEventListener('mouseout',hideSubMenu);
 
     // Бургер-меню
     let headerMburger = document.querySelector(".header__burger"),
@@ -227,36 +205,20 @@ let unlock = true;
 		}
 	// ==========================
 
-// Перемещение элемента	
-const contactsList = document.querySelector('.header__listt'); // Навигационный список
-const navList = document.querySelector('.header__list'); // Список контактов
-const instagramElement = document.querySelector('.inst'); // Инстаграм
 
-const footerForm = document.querySelector('.footer__form');
-const footerMenuRight = document.querySelector('.footer__menu-right');
-const footerMenuLeft  = document.querySelector('.footer__menu-left');
-
-
-// Функция для перемещение инстаграмма при разрешении 993
-function moveElement(destinationContainer,fallbackContainer,element,breakpoint,prepend){
-	if(window.innerWidth<breakpoint){
-		destinationContainer.append(element);
-	}else{
-		if(fallbackContainer){
-			prepend?fallbackContainer.prepend(element):fallbackContainer.append(element);
-			
+	// Функция для перемещение элемента при разрешении 993
+	function moveElement(destinationContainer,fallbackContainer,element,breakpoint,prepend){
+		if(window.innerWidth<breakpoint){
+			destinationContainer.append(element);
+		}else{
+			if(fallbackContainer){
+				prepend?fallbackContainer.prepend(element):fallbackContainer.append(element);
+				
+			}
 		}
 	}
-}
-// moveElement(navList,contactsList,instagramElement,993,true);
-// moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
-window.addEventListener('resize', function(){
-	// moveElement(navList,contactsList,instagramElement,993,true);
-	// moveElement(footerMenuRight,footerMenuLeft,footerForm,767,false);
-});
 
 
-	
 	// Функционал интернет магазина
 
     // Боковая корзина 
@@ -437,15 +399,11 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		let target = e.target;
 
 		if(target.closest('.popup__btn')){
-			console.log(target.closest('.popup__btn'))
+			
 			clickOnBtnProduct(e)
 		}
 		
 		})
-		// btnPopupBuy.forEach(item => {
-		// 	item.addEventListener('click',clickOnBtnProduct);
-		// });
-
 
     //===================================================
     
@@ -538,13 +496,16 @@ cartContent.addEventListener('touchend', touchEndHandler);
 					let priceString = parent.querySelector(".popup__price").textContent;
 					let priceNumber = parseInt(priceWithoutSpaces(parent.querySelector(".popup__price").textContent));
 	
-					// Генерируемый полученный продукт и добавляем его в панель корзины
-					cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
-	
+
 					// Проверяем, что повторно не добавлен один и тот же продукт
 					if(!idProduts.some((item=>item.id===id))){
+
+						// Генерируемый полученный продукт и добавляем его в панель корзины
+						cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
+
 						idProduts.push({id:id});
-					}
+
+
 					// Обновляем Storage, расчитываем сумму и выводим сумму и количество товаров на страницу
 					updateToStorage();
 	
@@ -576,74 +537,14 @@ cartContent.addEventListener('touchend', touchEndHandler);
 					localStorage.setItem('productAllprice',totalPrice);
 					
 					printFullPrice(); // Печатаем цену продуктов
+
+					}
+
 	
 				}
 		}
 		
 	})
-
-
-    // for (let item of btns) {
-
-	// 	// Установка атрибуа data-id попапа с продуктов и выдача ему айди
-    //     // item.closest(".popup__body").setAttribute("data-id", randomId++);
-
-    //     item.addEventListener("click", function (e) {
-	// 		e.preventDefault();
-			
-	// 		// Событие при условии, что текущей кнопки атрибут data-isbuy = false (Значит, что на кнопку еще не нажимали)
-	// 		if(e.currentTarget.getAttribute('data-isbuy')=='false'){
-
-	// 			// Получаем данные из текущего продукта при клике на добавление в корзину
-	// 			let parent = e.currentTarget.closest(".popup__body");
-	// 			let id = parent.dataset.id;
-	// 			let img = parent.querySelector(".popup__img-img").getAttribute("src");
-	// 			let title = parent.querySelector(".popup__title").textContent;
-	// 			let priceString = parent.querySelector(".popup__price").textContent;
-	// 			let priceNumber = parseInt(priceWithoutSpaces(parent.querySelector(".popup__price").textContent));
-
-	//             // Генерируемый полученный продукт и добавляем его в панель корзины
-	// 			cartList.insertAdjacentHTML('afterbegin', generateCartProduct(img, title, priceString, id));
-
-    //             // Проверяем, что повторно не добавлен один и тот же продукт
-	// 			if(!idProduts.some((item=>item.id===id))){
-	// 				idProduts.push({id:id});
-	// 			}
-	// 			// Обновляем Storage, расчитываем сумму и выводим сумму и количество товаров на страницу
-	// 			updateToStorage();
-
-    //             // Устаналиваем начальное значение продукта при добавлении в корзину
-    //             function setInitialValue (productData, id, initValue, productLocal){
-	// 				// Если товара нет в объекте, добавялем с начальным значение
-	// 				if (!productData[id]) {
-	// 					productData[id] = initValue; 
-	// 					localStorage.setItem(productLocal,JSON.stringify(productData));
-	// 				}
-	// 			};
-	// 			setInitialValue(productСount, id, 1, 'productСount'); // Начальное количество 1
-	// 			setInitialValue(productPrice, id, priceNumber, 'productPrice'); // Начальное цена продукта
-
-    //             itemQuan = 0;
-    //             // Собираем количество значений
-	// 			Object.values(productСount).map((item=>{
-	// 				return itemQuan += item;
-	// 			}));
-
-    //             // Устаналиваем общее количество продуктов и сохраняем в локал
-	// 			totalCount = itemQuan;
-	// 			localStorage.setItem('produtcAllCount',totalCount);
-	            
-	// 			printQuan(); // Печатаем количество продуктов
-
-	// 			// Устаналиваем общий прайс продуктов и сохраняем в локал
-	// 			totalPrice += priceNumber;
-	// 			localStorage.setItem('productAllprice',totalPrice);
-				
-	// 			printFullPrice(); // Печатаем цену продуктов
-
-	// 		}
-    //     })
-    // };
 
     //  Перерасчет цены при удалении товара из корзины
     const deleteProduct = function (deletProd) {
@@ -657,8 +558,6 @@ cartContent.addEventListener('touchend', touchEndHandler);
         // Вызываем функцию для синхронизации продуктов к корзине и на странице
 		synchronizeButton(id);
 	
-
-
         // Вычитаем из суммы удаленный продукт и печатаем новую сумму и обновляем Storage
 		updateToStorage();
 
@@ -899,7 +798,6 @@ cartContent.addEventListener('touchend', touchEndHandler);
     };
 
 	
-
     // Функция для обнолвения даннхы по количестве и цены
 	function updateProductData (productData,productLocal) {
         // Если нет продуктов, то удаляем даннеы из локал, иначе устанавливаем актуальное
@@ -944,7 +842,6 @@ cartContent.addEventListener('touchend', touchEndHandler);
 		itemQuan = 0; // Сброс промежуточного количества
 		itemPrice = 0; // Сброс промежуточного прайса
 		
-		
 	}
 
     // Функция для сброса кнопок до начального состояния
@@ -961,29 +858,28 @@ cartContent.addEventListener('touchend', touchEndHandler);
 					item.classList.remove('ShopСart');
 				}))
 	};
-    		// Событие нажатие на кнопку "Очистить корзину"
-		clearCartBtn.addEventListener('click',()=>{
+    // Событие нажатие на кнопку "Очистить корзину"
+	clearCartBtn.addEventListener('click',()=>{
 
-			clearCart(); // Очитка корзины
-			resetButtons(); // Сбос кнопок
-			localStorage.clear(); // Очитска localStorage
-		});
-
+		clearCart(); // Очитка корзины
+		resetButtons(); // Сбос кнопок
+		localStorage.clear(); // Очитска localStorage
+	});
 
 	// Блок с динамическим выводом товаров
 
-	let currentPage = window.location.pathname.replace('/Halvace/', '').replace('.html', '').replace('/', '');
+	let visibleDatePage = {}; // Видимые товары на странице
 
-	
+	let currentPage = window.location.pathname.replace('/Halvace/', '').replace('.html', '').replace('/', ''); // Получаем текущую страницу без / и html
 
-	// Уникальный элемент страницы Lighting
+	// Уникальные элементы страницы с товарами
 	let furnitureId = document.querySelector('#Furniture');
 	let LightingId = document.querySelector('#Lighting');
 	let decorId = document.querySelector('#decor');
 
-	
+	// Функция при инициализации созданных товаров
 	function initProductOnPage(category){
-
+        // Если на нужных страницах с товарами
 		if(furnitureId || LightingId || decorId){
 
 			// Переменные
@@ -992,28 +888,29 @@ cartContent.addEventListener('touchend', touchEndHandler);
 			const btn = document.querySelector('.category__btn'); // Кнопка "Показать еще"
 			// Элемент загрузки
 			const furnitureLoading = document.querySelector('.furniture_loading');
-	
-			let visible = 4; // Начальное значение видимых товаров при загрузке страницы
-	
-			// Функция по установке начального значаения visible при перезагрузке
-			function loadSavedData() {
-	
-				let savedVisible = localStorage.getItem('visible'); // Из локал получаем новое значение visible и назначаем savedVisible
-				// Если есть данные savedVisible, то устанавливаем новое значание для visible, иначе оставляем начальное значение visible
-				if (savedVisible) {
-					visible = parseInt(savedVisible, 10);
+	        
+			// Функция установки видимых товаров на конртеной странице
+			function setVisibleDataPage (){
+				visibleDatePage[currentPage] += 4;
+				localStorage.setItem('visibleDataPage',JSON.stringify(visibleDatePage));
+			};
+
+			// Функция загрущки сохранненого значения видимых товаров
+			function loadSaveVisibleDataPage(){
+				if(localStorage.getItem('visibleDataPage')){
+					visibleDatePage = JSON.parse(localStorage.getItem('visibleDataPage'));
 				}else{
-					visible = 4;
-				}
-			}
-			// Функция для установки нового значения visible в локал
-			function setVisibleState(){
-				localStorage.setItem('visible',visible)
-			}
+					visibleDatePage = {
+						"Furniture":4,
+					    "Lighting":4,
+				        "decor":4
+					};
+				};
+			};
 	
 			// Пример новых данных всех категорий
 			const data = {
-				
+
 				'Furniture':[
 					{
 					  "name": "Диван «Модерн Блэк»",
@@ -1244,12 +1141,21 @@ cartContent.addEventListener('touchend', touchEndHandler);
 					  "decr": "Удобное кресло с мягкой обивкой желтого цвета, добавляющее в интерьер жизнерадостные акценты."
 					}
 				  ]
-			}
-			  
+			};
+
+			// Функция для скрытия элемента
+			function hideElem (elem){
+				elem.style.display = 'none';	
+			};
+			// функция для показа элемента
+			function showElem(elem){
+				elem.style.opacity = '1';
+				elem.style.visibility = 'visible';
+			};
 			// Функция создания новых продуктов
 			function createCardProduct (categoryData){
 			
-				let newData = data[categoryData].slice(0,visible) // Создаем новый массив учитывая начальное значение показов товара
+				let newData = data[categoryData].slice(0,visibleDatePage[categoryData]); // Создаем новый массив учитывая начальное значение показов товара
 				furnitureList.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
 	
 				// Проходимя по массиву с продуктами и генерируем новый продукт
@@ -1269,20 +1175,20 @@ cartContent.addEventListener('touchend', touchEndHandler);
 					   <div class="category__item-price">${price}₽</div>
 				   </div>
 					   `
-					   furnitureList.append(product) // Добавляем продукт в лист продуктов
-				})
-			}
+					   furnitureList.append(product); // Добавляем продукт в лист продуктов
+				});
+			};
 			// Функция создания новых попапов для каждого продукта
 			function createPopupProduct (categoryData){
 	
-					let newData = data[categoryData].slice(0,visible) // Создаем новый массив попапов продукта учитывая начальное значение показов товара
+					let newData = data[categoryData].slice(0,visibleDatePage[categoryData]); // Создаем новый массив попапов продукта учитывая начальное значение показов товара
 					popupContent.innerHTML = ''; // Перед новой отрисовкой товаров, очищаем старую
 	
 					// Проходимя по массиву с продуктами и генерируем новый попап продукта
 					newData.map((item)=>{
 						let {name,price,img, decr, id} = item;
 						let product  = document.createElement('div');
-						product.classList.add('popup', `popup_new-prodectN${id}`)
+						product.classList.add('popup', `popup_new-prodectN${id}`);
 						product.innerHTML = `
 						<div class="popup__content">
 						<div class="popup__body" data-id=${id} id="new-prodectN${id}">
@@ -1306,9 +1212,9 @@ cartContent.addEventListener('touchend', touchEndHandler);
 					})
 				
 					`
-					popupContent.append(product) // Добавляем попап продукта в лист попапов
-					})
-			}
+					popupContent.append(product); // Добавляем попап продукта в лист попапов
+					});
+			};
 			// Функция по перезначению добавления обработчиков на динамические продукты для открытия попапов к ним
 			function bindPopupEvents() {
 					let popup_link = document.querySelectorAll('._popup-link');
@@ -1341,53 +1247,52 @@ cartContent.addEventListener('touchend', touchEndHandler);
 							})
 						}
 					}
-			}
+			};
 			// Функция для динамиеской подгрузки товаров
 			function lazyLoading(){
 		
 					btn.disabled = true; // Блокируем кнопку "Показать еще"
 	
-						visible+=4; // Увеличиваем начальное значание показа товаров
-	
-						setVisibleState(); // Устанавливаем акутальное значение начального показа товаров
+					// visibleDatePage[currentPage]+=4; // Увеличиваем начальное значание показа товаров
+
+						setVisibleDataPage();
+
+						
 						createPopupProduct(category); // Отрисовываем новый список товаров
 						createCardProduct(category); // Отрисовываем нвоый список попапов к продуктам
 						bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
 						
 						btn.disabled = false; // Разблокируем кнопку "Показать еще"
 						// Проверяем если длина массива продуктов равна видимому количеству товаров, то убираем кнопку "Показать еще"
-						if(data[category].length === visible){
-							btn.style.display = 'none';
+						if(data[category].length === visibleDatePage[category]){
+							hideElem(btn);
 						};			
+
+					
 			}
-	
-			loadSavedData(); // Устаналиваем начальное значание visible
+
+			loadSaveVisibleDataPage(); // Инициализация видимвых товаров на странице
 			createCardProduct(category); // Создание динамических товаров
 			createPopupProduct(category); // Создание динамических попапов для товаров
 			bindPopupEvents(); // Переназначаем обработчики для октрытия попапов продукта
 	
 			// Проверяем равно ли количество видимых товаров на странице количеству в массиве продуктов
 			if(furnitureList.children.length>=data[category].length){
-				btn.style.display = 'none';  // Если да, то кнопку "Добавить еще" удаляем
-			}
-	
+				hideElem(btn); // Если да, то кнопку "Добавить еще" удаляем
+			};
 	
 			// Функционал для показа элемта загрузки
 			// Скрываем элемент загрузки, когда все товары подгрузились
-			furnitureLoading.style.display = 'none'
-			btn.style.opacity = '1';
-			btn.style.visibility = 'visible';
+			hideElem(furnitureLoading); // Скрываем элемент загрузки
+			showElem(btn); // Показываем кпноку "Показать еще"
 	
 			// Если была нажата кнопка "Добавить еще" - подгружаем новые товары на страницу и сохраняем их в локал
-			btn.addEventListener('click',lazyLoading)	
+			btn.addEventListener('click',lazyLoading);	
 		}
 	}
 
-	initProductOnPage(currentPage)
+	initProductOnPage(currentPage);
     // Проверяем есть блок со страницы Furniture
-
-
-		
 
 	// Иницилизуем данные из локал
 	initialStore();   
