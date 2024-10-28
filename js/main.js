@@ -972,7 +972,7 @@ cartContent.addEventListener('touchend', touchEndHandler);
 
 	// Блок с динамическим выводом товаров
 
-	let currentPage = window.location.pathname.replace('/','').replace('.html','').replace('Halvace','').replace('/','');
+	let currentPage = window.location.pathname.replace('/Halvace/', '').replace('.html', '').replace('/', '');
 
 	
 
