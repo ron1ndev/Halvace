@@ -2024,7 +2024,7 @@ left: -35px;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
       justify-content: space-between;
-  gap: 20px;
+  gap: 25px;
   margin-bottom: 20px;
 }
 
@@ -2083,13 +2083,14 @@ border-radius:4px;
   line-height: 22px;
   letter-spacing: 0.02em;
   color: #000000;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 500;
+  min-height: 44px;
 }
 
 .category__item-price {
   font-weight: 300;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 22px;
   color: #000000;
 }
@@ -2830,6 +2831,10 @@ z-index: 1;
 
 
 @media screen and (max-width: 767px) {
+
+  .category__item-title{
+    min-height: 0px;
+  }
   .footer-wrap {
       grid-template-areas:
       'logo'
