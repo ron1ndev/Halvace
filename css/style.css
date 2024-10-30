@@ -1535,8 +1535,8 @@ left: -35px;
   z-index: 5;
   width: 100%;
   background-color: #fff;
-  -webkit-animation: hf 1s;
-          animation: hf 1s;
+  -webkit-animation: hf 0.5s;
+          animation: hf 0.5s;
   padding: 20px 0;
 }
 
@@ -2019,6 +2019,7 @@ position: relative;
   color: rgba(0, 0, 0, 0.6);
   padding: 0 0 0 10px;
   margin-bottom: 16px;
+  border-radius: 4px;
 }
 
 .contacts__area {
@@ -2032,6 +2033,7 @@ position: relative;
   padding: 10px 0 0 10px;
   margin-bottom: 16px;
   resize: none;
+  border-radius: 4px;
 }
 
 .contacts__btn {
@@ -2041,6 +2043,8 @@ position: relative;
   color: #000000;
   padding: 5px 13px;
   border: 1px solid #000000;
+  background: #ffffff;
+  border-radius: 4px;
 }
 
 .info__block {
@@ -3336,7 +3340,7 @@ border-radius:8px;
   }
 
   .header {
-    padding: 30px 0;
+    padding: 20px 0;
   }
 
   .header__row {
@@ -3397,7 +3401,7 @@ border-radius:8px;
   }
 
   .main-block-padding {
-    padding: 100px 0 0 0;
+    padding: 69px 0 0 0;
   }
 
   .footer__menu {
@@ -3692,7 +3696,7 @@ min-height: 100px;
   }
 
   .main-block-padding {
-    padding: 80px 0 0 0;
+    padding: 69px 0 0 0;
   }
 
   .footer__content {

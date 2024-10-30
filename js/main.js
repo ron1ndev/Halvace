@@ -179,22 +179,24 @@ let unlock = true;
 
 
 // Липкая щапка при скроле 
-	if(document.querySelector(".main-block")){
-		
+	// if(document.querySelector(".main-block")){
+		let main = document.querySelector('main');
 		let mainBlock = document.querySelector(".main-block");
 		let header = document.querySelector(".header");
 
+		console.log(main)
+
 		window.addEventListener('scroll', function () {
 
-			if (window.pageYOffset > 80) {
+			if (window.pageYOffset > 70) {
 				header.classList.add("header-fixed-active");
 				cartContent.classList.add("cart-top");
 				cartBtn.classList.add("final__order-active")
-				mainBlock.classList.add("main-block-padding");
+				main.classList.add("main-block-padding");
 				cartContent.style.height = `95%`;
 
 			} else {
-				mainBlock.classList.remove("main-block-padding");
+				main.classList.remove("main-block-padding");
 				header.classList.remove("header-fixed-active");
 				cartContent.classList.remove("cart-top");
 				cartContent.style.height = `100%`;
@@ -202,7 +204,7 @@ let unlock = true;
 			}
 		})
 
-		}
+		// }
 	// ==========================
 
 
